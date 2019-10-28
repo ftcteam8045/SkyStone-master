@@ -101,7 +101,7 @@ public class testAuto extends LinearOpMode {
         telemetry.update();
 
         /**************************************************************
-         // Actual Init loop
+         // Actual Init  loop
          *************************************************************/
         while (!opModeIsActive() && !isStopRequested()) {
             if (tfod != null) {
