@@ -100,9 +100,9 @@ public class Hardware2019
     HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
 
-    DistanceSensor sensor;
+   // DistanceSensor sensor;
 
-
+    ColorSensor sensorColor;
     /* Constructor */
     public Hardware2019(){
 
@@ -206,7 +206,9 @@ public class Hardware2019
 
 
 
-        sensor = hwMap.get(DistanceSensor.class, "sensor");
+        //sensor = hwMap.get(DistanceSensor.class, "sensor");
+        sensorColor = hwMap.get(ColorSensor.class, "sensor_color");
+
 
 
 

@@ -1,17 +1,22 @@
 package org.firstinspires.ftc.teamcode.Skystone;
 
+import android.graphics.Color;
+
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
+import java.util.Locale;
+
 
 @TeleOp(name = "MainTele", group = "8045")  // @Autonomous(...) is the other common choice
-@Disabled
+//@Disabled
 public class MainTele2019 extends OpMode {
 
     Hardware2019 Cosmo;
@@ -38,10 +43,7 @@ public class MainTele2019 extends OpMode {
     public float hsvValues[] = {0F, 0F, 0F};
     // values is a reference to the hsvValues array.
     public float values[] = hsvValues;
-
-
-
-
+    final double SCALE_FACTOR = 255;
 
 
     public double multiplier = 0.1818;
@@ -76,6 +78,18 @@ public class MainTele2019 extends OpMode {
 
         timeLeft = 120 - runtime.seconds();
 
+
+        Color.RGBToHSV((int) (Cosmo.sensorColor.red() * SCALE_FACTOR),
+                (int) (Cosmo.sensorColor.green() * SCALE_FACTOR),
+                (int) (Cosmo.sensorColor.blue() * SCALE_FACTOR),
+                hsvValues);
+
+        // send the info back to driver station using telemetry function.
+        telemetry.addData("Alpha", Cosmo.sensorColor.alpha());
+        telemetry.addData("Red  ", Cosmo.sensorColor.red());
+        telemetry.addData("Green", Cosmo.sensorColor.green());
+        telemetry.addData("Blue ", Cosmo.sensorColor.blue());
+        telemetry.addData("Hue", hsvValues[0]);
 //        // BACK mode
 
         if (gamepad1.right_stick_button) {
@@ -120,7 +134,7 @@ public class MainTele2019 extends OpMode {
         drivesmart(-gamepad1.right_stick_x, -gamepad1.right_stick_y, gamepad1.left_stick_x);
 
 
-        telemetry.addData("range", String.format("%.01f mm", Cosmo.sensor.getDistance(DistanceUnit.MM)));
+        //telemetry.addData("range", String.format("%.01f mm", Cosmo.sensor.getDistance(DistanceUnit.MM)));
 
 
         telemetry.update();
