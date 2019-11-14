@@ -17,7 +17,7 @@ import java.util.Locale;
 
 @TeleOp(name = "MainTele", group = "8045")  // @Autonomous(...) is the other common choice
 //@Disabled
-public class MainTele2019 extends OpMode {
+public class mainTele extends OpMode {
 
     Hardware2019 Cosmo;
     private ElapsedTime runtime = new ElapsedTime();
