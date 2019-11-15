@@ -56,6 +56,8 @@ public class Hardware2019
     public DcMotor  rightFront  = null;
     public DcMotor  leftRear    = null;
     public DcMotor  rightRear   = null;
+    public Servo clamp1 = null;
+    public Servo clamp2 = null;
 
 
 
@@ -120,6 +122,9 @@ public class Hardware2019
 
         // LED lights
         //LEDpattern =  com.qualcomm.hardware.rev.RevBlinkinLedDriver.BlinkinPattern.RAINBOW_RAINBOW_PALETTE;
+
+        clamp1 = hwMap.get(Servo.class, "clamp_1");
+        clamp1 = hwMap.get(Servo.class, "clamp_2");
 
 
         // Define and Initialize Motors

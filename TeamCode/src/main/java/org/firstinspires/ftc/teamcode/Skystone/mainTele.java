@@ -136,6 +136,22 @@ public class mainTele extends OpMode {
 
         //telemetry.addData("range", String.format("%.01f mm", Cosmo.sensor.getDistance(DistanceUnit.MM)));
 
+        /** CONTROLS FOR FOUNDATION CLAMP SERVOS **/
+
+        if(gamepad1.dpad_down == true){
+
+            Cosmo.clamp1.setPosition(0.4);
+            Cosmo.clamp2.setPosition(0.4);
+        }
+
+        if(gamepad1.dpad_up == true){
+
+            Cosmo.clamp1.setPosition(0.8);
+            Cosmo.clamp2.setPosition(0.8);
+        }
+
+
+
 
         telemetry.update();
     }

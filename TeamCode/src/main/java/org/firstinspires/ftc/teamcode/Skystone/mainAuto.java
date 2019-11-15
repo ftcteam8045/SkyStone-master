@@ -53,10 +53,17 @@ public class mainAuto extends LinearOpMode {
     public int driveDis2 = 22;
     public int driveDis3 = 10; //forward+backward
     public int driveDis4 = 30;
-
-    public boolean loadingPosition = false;
-    public boolean buildingPosition = true;
-
+    public boolean loadingPosition = true;
+    public boolean buildingPosition = false;
+    public double grayHueValue = 90.0;  // color sensor values
+    public double redHueValue  =  5;
+    public double blueHueValue = 189;
+    public double grayRedBorder  = (grayHueValue + redHueValue  ) / 2;
+    public double grayBlueBorder = (grayHueValue + blueHueValue ) / 2;
+    // hsvValues is an array that will hold the hue, saturation, and value information.
+    public float hsvValues[] = {0F, 0F, 0F};
+    // values is a reference to the hsvValues array.
+    public float values[] = hsvValues;
     // State used for updating telemetry
     public Orientation angles;
     public Acceleration gravity;
@@ -149,15 +156,15 @@ public class mainAuto extends LinearOpMode {
         if (loadingPosition){            /** loading zone drive  **/
 
         /** scans for skystone first **/
-            mecanumDrive(0.5, driveDis3, 0, 0); //drive forward
-            sleep(200);
-            mecanumTurn(0.5, -90); // turn left
-            sleep(200);
-            mecanumDrive(2.5, driveDis4, 0, 0); // drive forward
-            sleep(200);
-            /** place down block? **/
-            mecanumDrive(0.5, -driveDis3, 0, 0); //drive backward
-
+//            mecanumDrive(0.5, driveDis3, 0, 0); //drive forward
+//            sleep(200);
+//            mecanumTurn(0.5, -90); // turn left
+//            sleep(200);
+//            mecanumDrive(2.5, driveDis4, 0, 0); // drive forward
+//            sleep(200);
+//            /** place down block? **/
+//            mecanumDrive(0.5, -driveDis3, 0, 0); //drive backward
+            mecanumDrivetoTape(0.3, driveDis3*4, 0, 0);  //drive towards base
 
         }
 
@@ -333,6 +340,93 @@ public class mainAuto extends LinearOpMode {
         Cosmo.rightRear.setPower(0.0);
         Cosmo.leftRear.setPower(0.0);
     }
+
+
+    public void mecanumDrivetoTape(double speed, double distance, double robot_orientation, double drive_direction) {
+        double max;
+        double multiplier;
+        int right_start;
+        int left_start;
+        int moveCounts;
+        //int drive_direction = -90;
+        moveCounts = (int) (distance * Cosmo.COUNTS_PER_INCH);
+        right_start = Cosmo.rightRear.getCurrentPosition();
+        left_start = Cosmo.leftRear.getCurrentPosition();
+        double lfpower;
+        double lrpower;
+        double rfpower;
+        double rrpower;
+
+        double lfbase;
+        double lrbase;
+        double rfbase;
+        double rrbase;
+        lfbase = signum(distance) * Math.cos(Math.toRadians(drive_direction + 45));
+        lrbase = signum(distance) * Math.sin(Math.toRadians(drive_direction + 45));
+        rfbase = signum(distance) * Math.sin(Math.toRadians(drive_direction + 45));
+        rrbase = signum(distance) * Math.cos(Math.toRadians(drive_direction + 45));
+        /** this is the main test to see if you've gone far enough,  add the color tape in here!
+         *  so you need a || (hue is less than so much || hue is > so much)
+         *
+         *  could also say  'while it's not withing a little bit of the gray reading'
+         *
+         * **/
+        Color.RGBToHSV((int)(Cosmo.sensorColor.red() * 255), (int)(Cosmo.sensorColor.green() * 255), (int)(Cosmo.sensorColor.blue() * 255), hsvValues);
+
+        while (((abs(Cosmo.rightRear.getCurrentPosition() - right_start) + abs(Cosmo.leftRear.getCurrentPosition() - left_start)) / 2 < abs(moveCounts))
+                && opModeIsActive() &&    // opmode has to be active
+                (hsvValues[0] > grayRedBorder && hsvValues[0] < grayBlueBorder ) ) {         //  stop if the hue goes outside of the gray range
+            //Determine correction
+            double correction = robot_orientation - getheading();
+            if (correction <= -180) {
+                correction += 360;
+            } else if (correction >= 180) {                      // correction should be +/- 180 (to the left negative, right positive)
+                correction -= 360;
+            }
+            lrpower = lrbase; //MIGHT BE MORE EFFECIENT TO COMBINE THESE WITHT HE ADJUSTMENT PART AND SET ADJUSTMENT TO ZERO IF NOT NEEDED
+            lfpower = lfbase;
+            rrpower = rrbase;
+            rfpower = rfbase;
+            if (abs(correction) > drive_THRESHOLD) {//If you are off
+                //Apply power to one side of the robot to turn the robot back to the right heading
+                double right_adjustment = Range.clip((drive_COEF * correction / 45), -1, 1);
+                lrpower -= right_adjustment;
+                lfpower -= right_adjustment;
+                rrpower = rrbase + right_adjustment;
+                rfpower = rfbase + right_adjustment;
+
+            }//Otherwise you Are at the right orientation
+
+            //Determine largest power being applied in either direction
+            max = abs(lfpower);
+            if (abs(lrpower) > max) max = abs(lrpower);
+            if (abs(rfpower) > max) max = abs(rfpower);
+            if (abs(rrpower) > max) max = abs(rrpower);
+
+            multiplier = speed / max; //multiplier to adjust speeds of each wheel so you can have a max power of 1 on atleast 1 wheel
+
+            lfpower *= multiplier;
+            lrpower *= multiplier;
+            rfpower *= multiplier;
+            rrpower *= multiplier;
+
+            Cosmo.leftFront.setPower(lfpower);
+            Cosmo.leftRear.setPower(lrpower);
+            Cosmo.rightFront.setPower(rfpower);
+            Cosmo.rightRear.setPower(rrpower);
+
+//            RobotLog.ii("[GromitIR] ", Double.toString(18.7754*Math.pow(sharpIRSensor.getVoltage(),-1.51)), Integer.toString(left_front.getCurrentPosition()));
+            // update the Hue
+            Color.RGBToHSV((int)(Cosmo.sensorColor.red() * 255), (int)(Cosmo.sensorColor.green() * 255), (int)(Cosmo.sensorColor.blue() * 255), hsvValues);
+
+        }
+        //gromit.driveTrain.stopMotors();
+        Cosmo.leftFront.setPower(0.0);
+        Cosmo.rightFront.setPower(0.0);
+        Cosmo.rightRear.setPower(0.0);
+        Cosmo.leftRear.setPower(0.0);
+    }
+
 
 
     public float getheading() {
