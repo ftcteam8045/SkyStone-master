@@ -54,7 +54,8 @@ public class mainAuto extends LinearOpMode {
     public int driveDis3 = 10; //forward+backward
     public int driveDis4 = 30;
     public boolean loadingPosition = true;
-    public boolean buildingPosition = false;
+    public boolean grabFoundation = false;
+    public boolean teamIsRed = true;
     public double grayHueValue = 90.0;  // color sensor values
     public double redHueValue  =  5;
     public double blueHueValue = 189;
@@ -112,6 +113,19 @@ public class mainAuto extends LinearOpMode {
          *************************************************************/
         while (!opModeIsActive() && !isStopRequested()) {
             if (tfod != null) {
+                telemetry.addLine(" Press Left Joystick for Edit");
+
+                if (teamIsRed) {
+                    telemetry.addData("", "RED");
+                } else {
+                    telemetry.addData("", "BLUE");
+                }
+                if (loadingPosition) {
+                    telemetry.addData("", "Loading Position");
+                } else {
+                    telemetry.addData("", "Building Position");
+                }
+
                 // getUpdatedRecognitions() will return null if no new information is available since
                 // the last time that call was made.
                 List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
@@ -130,6 +144,14 @@ public class mainAuto extends LinearOpMode {
                     telemetry.update();
                 }
             }
+
+            if (gamepad1.back || gamepad1.left_stick_button) {             // edit parameters  & write the new file
+
+                editParameters();
+
+            }
+            telemetry.update();
+
         }
 
 
@@ -153,9 +175,11 @@ public class mainAuto extends LinearOpMode {
         tfod.deactivate();
 
 
-        if (loadingPosition){            /** loading zone drive  **/
+        if(teamIsRed) { /** RED SIDE CODE **/
 
-        /** scans for skystone first **/
+            if (loadingPosition) {            /** loading zone drive  **/
+
+                /** scans for skystone first **/
 //            mecanumDrive(0.5, driveDis3, 0, 0); //drive forward
 //            sleep(200);
 //            mecanumTurn(0.5, -90); // turn left
@@ -164,12 +188,9 @@ public class mainAuto extends LinearOpMode {
 //            sleep(200);
 //            /** place down block? **/
 //            mecanumDrive(0.5, -driveDis3, 0, 0); //drive backward
-            mecanumDrivetoTape(0.3, driveDis3*4, 0, 0);  //drive towards base
+                mecanumDrivetoTape(0.3, driveDis3 * 4, 0, 0);  //drive towards base
 
-        }
-
-
-        if (buildingPosition){             /** building zone drive  **/
+            } else {             /** building zone drive  **/
 
 //            mecanumDrive(0.5, driveDis1,0, 0);       // drive forward
 //            sleep(200);
@@ -180,8 +201,39 @@ public class mainAuto extends LinearOpMode {
 //            mecanumDrive(0.5, driveDis1,0,0); //drive forward
 
 
-        }
+            }
+        } else {     /** BLUE SIDE CODE **/
 
+            if (loadingPosition) {            /** loading zone drive  **/
+
+                /** scans for skystone first **/
+//            mecanumDrive(0.5, driveDis3, 0, 0); //drive forward
+//            sleep(200);
+//            mecanumTurn(0.5, -90); // turn left
+//            sleep(200);
+//            mecanumDrive(2.5, driveDis4, 0, 0); // drive forward
+//            sleep(200);
+//            /** place down block? **/
+//            mecanumDrive(0.5, -driveDis3, 0, 0); //drive backward
+                mecanumDrivetoTape(0.3, driveDis3 * 4, 0, 0);  //drive towards base
+
+            } else {             /** building zone drive  **/
+
+//            mecanumDrive(0.5, driveDis1,0, 0);       // drive forward
+//            sleep(200);
+//            mecanumDrive(.5, -driveDis1,0,0);        // drive backwards
+//            sleep(200);
+//            mecanumTurn(0.5, 90); //turn right
+//            sleep(200);
+//            mecanumDrive(0.5, driveDis1,0,0); //drive forward
+
+
+            }
+
+
+
+
+        }
         Cosmo.leftFront.setPower(0);
         Cosmo.rightFront.setPower(0);
         Cosmo.leftRear.setPower(0);
@@ -444,22 +496,25 @@ public class mainAuto extends LinearOpMode {
 
     public void editParameters() {
 
-
+        String arrow01 = " ";
+        String arrow0 = " ";
+        String arrow1 = " ";
         String arrow2 = " ";
-
 
         boolean dpadPressedUp = false;
         boolean dpadPressedDown = false;
         boolean dpadPressedLeft = false;
         boolean dpadPressedRight = false;
-        String[] position = {"Foundation Side", "Loading Side"};
+        String[] position = {"building position", "loading position"};
         int positionIndex = 0;
-        if (buildingPosition) positionIndex = 1;
-
-//        String[] color = {"Blue", "Red"};
-//        int colorIndex = 0;
+        if (loadingPosition) positionIndex = 1;
+//
+        String[] color = {"Blue", "Red"};
+        int colorIndex = 0;
 //        if (teamIsRed) colorIndex = 1;
+//
 
+//        if (testBot) botIndex = 1;
 
         int currentEdit = 1;
 
@@ -468,10 +523,11 @@ public class mainAuto extends LinearOpMode {
             // Send telemetry message to signify robot waiting;
 
 
-            telemetry.addLine("Use Dpad to Navigate & change");
             telemetry.addLine().addData("", currentEdit).addData("current edit number", ' ');
+            telemetry.addLine().addData(arrow01, grabFoundation).addData("Grab foundation?", arrow01);
+            telemetry.addLine().addData(arrow0, waitTime1).addData("Wait Time", arrow0);
+            telemetry.addLine().addData(arrow1, colorIndex).addData(color[colorIndex], arrow1);
             telemetry.addLine().addData(arrow2, positionIndex).addData(position[positionIndex], arrow2);
-
 
 //            telemetry.addLine().addData(arrow4, "Color       ");
             telemetry.update();
@@ -496,20 +552,64 @@ public class mainAuto extends LinearOpMode {
                 }
             }
 
+            if (currentEdit == -1) {
+                arrow01 = "<>";
+            } else {
+                arrow01 = "    ";
+            }
+            if (currentEdit == 0) {
+                arrow0 = "<>";
+            } else {
+                arrow0 = "    ";
+            }
+            if (currentEdit == 1) {
+                arrow1 = "<>";
+            } else {
+                arrow1 = "    ";
+            }
+            if (currentEdit == 2) {
+                arrow2 = "<>";
+            } else {
+                arrow2 = "    ";
+            }
+
+
+
+
+
 
             if (gamepad1.dpad_left) {
                 dpadPressedLeft = true;
             } else if (gamepad1.dpad_left == false && dpadPressedLeft) {
                 dpadPressedLeft = false;
-
-
+                if (currentEdit == -1) {
+                    if (grabFoundation == true) {
+                        grabFoundation = false;
+                    } else {
+                        grabFoundation = true;
+                    }
+                }
                 if (currentEdit == 0) {
+                    waitTime1 -= 1000;
+                }
+                if (currentEdit == 1) {
+                    if (colorIndex == 1) {
+                        colorIndex = 0;
+                        //teamIsRed = false;
+                        //Cosmo.LEDDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_BLUE);
+                    } else {
+                        colorIndex = 1;
+                        //teamIsRed = true;
+                        //Cosmo.LEDDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_RED);
+                    }
+                }
+                if (currentEdit == 2) {
                     if (positionIndex == 1) {
                         positionIndex = 0;
-                        buildingPosition = false;
+                        loadingPosition = false;
                     } else {
                         positionIndex = 1;
-                        buildingPosition = true;
+                        loadingPosition = true;
                     }
                 }
 
@@ -521,22 +621,36 @@ public class mainAuto extends LinearOpMode {
                 dpadPressedRight = true;
             } else if (gamepad1.dpad_right == false && dpadPressedRight) {
                 dpadPressedRight = false;
-
-
                 if (currentEdit == 0) {
+                    waitTime1 += 1000;
+                }
+                if (currentEdit == 1) {
+                    if (colorIndex == 1) {
+                        colorIndex = 0;
+                        //teamIsRed = false;
+                        //Cosmo.LEDDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_BLUE);
+                    } else {
+                        colorIndex = 1;
+                       // teamIsRed = true;
+                       // Cosmo.LEDDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_RED);
+                    }
+                }
+                if (currentEdit == 2) {
                     if (positionIndex == 1) {
                         positionIndex = 0;
-                        buildingPosition = false;
+                        loadingPosition = false;
                     } else {
                         positionIndex = 1;
-                        buildingPosition = true;
+                        loadingPosition = true;
                     }
                 }
 
 
 
             }
-
+//                if (gamepad1.y) {
+//                    break;
+//                }
         }
         telemetry.update();
     }
