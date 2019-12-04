@@ -31,7 +31,7 @@ import static org.firstinspires.ftc.teamcode.oldcode.DriveTrain.turn_MIN_SPEED;
 //Lara + Liesel positioning code
 
 
-@Autonomous(name = "testAuto", group = "Cosmo")
+@Autonomous(name = "Auto", group = "Cosmo")
 //@Disabled
 public class mainAuto extends LinearOpMode {
 
@@ -217,7 +217,7 @@ public class mainAuto extends LinearOpMode {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minimumConfidence = 0.6;
+        tfodParameters.minimumConfidence = 0.35;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }

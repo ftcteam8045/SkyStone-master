@@ -149,7 +149,7 @@ public class mainTele extends OpMode {
             Cosmo.clamp1.setPosition(0.8);
             Cosmo.clamp2.setPosition(0.8);
         }
-
+  
 
 
 
