@@ -53,8 +53,9 @@ public class mainAuto extends LinearOpMode {
     public int driveDis2 = 22;
     public int driveDis3 = 10; //forward+backward
     public int driveDis4 = 30;
-    public boolean loadingPosition = true;
+    public boolean skystonePosition = true;
     public boolean grabFoundation = false;
+    public boolean foundationHoz = true;
     public boolean teamIsRed = true;
     public double grayHueValue = 90.0;  // color sensor values
     public double redHueValue  =  5;
@@ -107,30 +108,48 @@ public class mainAuto extends LinearOpMode {
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Ready to run");    //
         telemetry.update();
-
+        // AutoTransitioner used before waitForStart()
+       // if (teamIsRed) {
+   //         AutoTransitioner.transitionOnStop(this, "mainTele");   // get ready for teleop at the end of auto
+      //  } else {
+       //     AutoTransitioner.transitionOnStop(this, "MainTeleBlue");   // get ready for teleop at the end of auto
+       // }
         /**************************************************************
          // Actual Init  loop
          *************************************************************/
         while (!opModeIsActive() && !isStopRequested()) {
             if (tfod != null) {
-                telemetry.addLine(" Press Left Joystick for Edit");
 
-                if (teamIsRed) {
-                    telemetry.addData("", "RED");
-                } else {
-                    telemetry.addData("", "BLUE");
-                }
-                if (loadingPosition) {
-                    telemetry.addData("", "Loading Position");
-                } else {
-                    telemetry.addData("", "Building Position");
-                }
 
                 // getUpdatedRecognitions() will return null if no new information is available since
                 // the last time that call was made.
                 List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
                 if (updatedRecognitions != null) {
                     telemetry.addData("# Object Detected", updatedRecognitions.size());
+
+                    telemetry.addLine("Main Auto");
+
+
+                    telemetry.addLine(" Press Left Joystick for Edit");
+                    telemetry.addLine("------------------------------------------");
+                    if (grabFoundation) {
+                        telemetry.addData("Grab Partner Foundation: ", "TRUE");
+                    }
+                    if (teamIsRed) {
+                        telemetry.addData("", "RED");
+                    } else {
+                        telemetry.addData("", "BLUE");
+                    }
+                    if (skystonePosition) {
+                        telemetry.addData("", "Skystone Position");
+                    } else {
+                        telemetry.addData("", "Foundation Position");
+                    }
+                    if (foundationHoz) {
+                        telemetry.addData("", "Foundation Horizontal");
+                    } else {
+                        telemetry.addData("", "Foundation Vertical");
+                    }
 
                     // step through the list of recognitions and display boundary info.
                     int i = 0;
@@ -143,33 +162,26 @@ public class mainAuto extends LinearOpMode {
                     }
                     telemetry.update();
                 }
+
             }
+
 
             if (gamepad1.back || gamepad1.left_stick_button) {             // edit parameters  & write the new file
 
                 editParameters();
 
             }
-            telemetry.update();
 
+            //telemetry.update();
         }
 
 
         /**************************************************************
          // End Init loop
          *************************************************************/
-
-
-        // Wait for the game to start (driver presses PLAY) replaced by init loop
-        //       waitForStart();
-
-
         /**************************************************************
          // Actual RUN instructions
          *************************************************************/
-
-
-
 
 
         tfod.deactivate();
@@ -177,7 +189,7 @@ public class mainAuto extends LinearOpMode {
 
         if(teamIsRed) { /** RED SIDE CODE **/
 
-            if (loadingPosition) {            /** loading zone drive  **/
+            if (skystonePosition) {            /** skystone zone drive  **/
 
                 /** scans for skystone first **/
 //            mecanumDrive(0.5, driveDis3, 0, 0); //drive forward
@@ -190,7 +202,7 @@ public class mainAuto extends LinearOpMode {
 //            mecanumDrive(0.5, -driveDis3, 0, 0); //drive backward
                 mecanumDrivetoTape(0.3, driveDis3 * 4, 0, 0);  //drive towards base
 
-            } else {             /** building zone drive  **/
+            } else {             /** foundation zone drive  **/
 
 //            mecanumDrive(0.5, driveDis1,0, 0);       // drive forward
 //            sleep(200);
@@ -204,7 +216,7 @@ public class mainAuto extends LinearOpMode {
             }
         } else {     /** BLUE SIDE CODE **/
 
-            if (loadingPosition) {            /** loading zone drive  **/
+            if (skystonePosition) {            /** skystone zone drive  **/
 
                 /** scans for skystone first **/
 //            mecanumDrive(0.5, driveDis3, 0, 0); //drive forward
@@ -217,7 +229,7 @@ public class mainAuto extends LinearOpMode {
 //            mecanumDrive(0.5, -driveDis3, 0, 0); //drive backward
                 mecanumDrivetoTape(0.3, driveDis3 * 4, 0, 0);  //drive towards base
 
-            } else {             /** building zone drive  **/
+            } else {             /** foundation zone drive  **/
 
 //            mecanumDrive(0.5, driveDis1,0, 0);       // drive forward
 //            sleep(200);
@@ -259,7 +271,7 @@ public class mainAuto extends LinearOpMode {
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
-        // Loading trackables is not necessary for the TensorFlow Object Detection engine.
+        // skystone trackables is not necessary for the TensorFlow Object Detection engine.
     }
 
     /**
@@ -500,20 +512,25 @@ public class mainAuto extends LinearOpMode {
         String arrow0 = " ";
         String arrow1 = " ";
         String arrow2 = " ";
+        String arrow3 = " ";
 
         boolean dpadPressedUp = false;
         boolean dpadPressedDown = false;
         boolean dpadPressedLeft = false;
         boolean dpadPressedRight = false;
-        String[] position = {"building position", "loading position"};
+        String[] position = {"foundation position", "skystone position"};
         int positionIndex = 0;
-        if (loadingPosition) positionIndex = 1;
+        if (skystonePosition) positionIndex = 1;
 //
-        String[] color = {"Blue", "Red"};
-        int colorIndex = 0;
+        String[] color = {"blue", "red"};
+        int colorIndex = 1;
+        if (teamIsRed == false) colorIndex = 0;
+
 //        if (teamIsRed) colorIndex = 1;
 //
-
+        String[] foundationPos = {"foundation horizontal", "foundation vertical"};
+        int foundPosIndex = 0;
+        if (foundationHoz == false) foundPosIndex = 1;
 //        if (testBot) botIndex = 1;
 
         int currentEdit = 1;
@@ -521,13 +538,15 @@ public class mainAuto extends LinearOpMode {
         while (!gamepad1.right_stick_button && !opModeIsActive() && !isStopRequested()) {   // while haven't presse exit button, not in play mode, and not in stop
             telemetry.addLine("===> Press Right Joystick to exit EDIT mode <===");
             // Send telemetry message to signify robot waiting;
+            telemetry.addLine("");
 
-
-            telemetry.addLine().addData("", currentEdit).addData("current edit number", ' ');
-            telemetry.addLine().addData(arrow01, grabFoundation).addData("Grab foundation?", arrow01);
-            telemetry.addLine().addData(arrow0, waitTime1).addData("Wait Time", arrow0);
+            //telemetry.addLine().addData("", currentEdit).addData("current edit number", ' ');
+            telemetry.addLine().addData(arrow01, grabFoundation).addData("grab foundation?", arrow01);
+            telemetry.addLine().addData(arrow0, waitTime1).addData("wait time", arrow0);
             telemetry.addLine().addData(arrow1, colorIndex).addData(color[colorIndex], arrow1);
             telemetry.addLine().addData(arrow2, positionIndex).addData(position[positionIndex], arrow2);
+            telemetry.addLine().addData(arrow3, foundPosIndex).addData(foundationPos[foundPosIndex], arrow3);
+
 
 //            telemetry.addLine().addData(arrow4, "Color       ");
             telemetry.update();
@@ -572,7 +591,11 @@ public class mainAuto extends LinearOpMode {
             } else {
                 arrow2 = "    ";
             }
-
+            if (currentEdit == 3) {
+                arrow3 = "<>";
+            } else {
+                arrow3 = "    ";
+            }
 
 
 
@@ -595,24 +618,36 @@ public class mainAuto extends LinearOpMode {
                 if (currentEdit == 1) {
                     if (colorIndex == 1) {
                         colorIndex = 0;
-                        //teamIsRed = false;
+                        teamIsRed = false;
                         //Cosmo.LEDDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_BLUE);
                     } else {
                         colorIndex = 1;
-                        //teamIsRed = true;
+                        teamIsRed = true;
                         //Cosmo.LEDDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_RED);
                     }
                 }
                 if (currentEdit == 2) {
                     if (positionIndex == 1) {
                         positionIndex = 0;
-                        loadingPosition = false;
+                        skystonePosition = false;
+                        grabFoundation = true;
+
                     } else {
                         positionIndex = 1;
-                        loadingPosition = true;
+                        skystonePosition = true;
+                        grabFoundation = false;
+
                     }
                 }
-
+                if (currentEdit == 3) {
+                    if (foundPosIndex == 0) {
+                        foundPosIndex = 1;
+                        foundationHoz = false;
+                    } else {
+                        foundPosIndex = 0;
+                        foundationHoz = true;
+                    }
+                }
 
 
             }
@@ -621,30 +656,49 @@ public class mainAuto extends LinearOpMode {
                 dpadPressedRight = true;
             } else if (gamepad1.dpad_right == false && dpadPressedRight) {
                 dpadPressedRight = false;
+                if (currentEdit == -1) {
+                    if (grabFoundation == true) {
+                        grabFoundation = false;
+                    } else {
+                        grabFoundation = true;
+                    }
+                }
                 if (currentEdit == 0) {
                     waitTime1 += 1000;
                 }
                 if (currentEdit == 1) {
                     if (colorIndex == 1) {
                         colorIndex = 0;
-                        //teamIsRed = false;
+                        teamIsRed = false;
                         //Cosmo.LEDDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_BLUE);
                     } else {
                         colorIndex = 1;
-                       // teamIsRed = true;
+                       teamIsRed = true;
                        // Cosmo.LEDDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_RED);
                     }
                 }
                 if (currentEdit == 2) {
                     if (positionIndex == 1) {
                         positionIndex = 0;
-                        loadingPosition = false;
+                        skystonePosition = false;
+                        grabFoundation = true;
+
                     } else {
                         positionIndex = 1;
-                        loadingPosition = true;
+                        skystonePosition = true;
+                        grabFoundation = false;
+
                     }
                 }
-
+                if (currentEdit == 3) {
+                    if (foundPosIndex == 0) {
+                        foundPosIndex = 1;
+                        foundationHoz = false;
+                    } else {
+                        foundPosIndex = 0;
+                        foundationHoz = true;
+                    }
+                }
 
 
             }
