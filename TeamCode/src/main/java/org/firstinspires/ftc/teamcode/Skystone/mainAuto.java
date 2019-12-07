@@ -57,6 +57,9 @@ public class mainAuto extends LinearOpMode {
     public boolean grabFoundation = false;
     public boolean foundationHoz = true;
     public boolean teamIsRed = true;
+    public boolean left = false;
+    public boolean center = false;
+    public boolean right = true;
     public double grayHueValue = 90.0;  // color sensor values
     public double redHueValue  =  5;
     public double blueHueValue = 189;
@@ -132,6 +135,10 @@ public class mainAuto extends LinearOpMode {
 
                     telemetry.addLine(" Press Left Joystick for Edit");
                     telemetry.addLine("------------------------------------------");
+                    if(left) telemetry.addLine("LEFT");
+                    if(center) telemetry.addLine("CENTER");
+                    if(right) telemetry.addLine("RIGHT");
+
                     if (grabFoundation) {
                         telemetry.addData("Grab Partner Foundation: ", "TRUE");
                     }
@@ -159,7 +166,28 @@ public class mainAuto extends LinearOpMode {
                                 recognition.getLeft(), recognition.getTop());
                         telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
                                 recognition.getRight(), recognition.getBottom());
+
+                        telemetry.addData("", recognition.getRight());
+
+                        if(recognition.getLabel() == "Skystone"){
+
+                            if(recognition.getRight() < 350 && recognition.getTop() > 700) {
+                                left = true;
+                                center = false;
+                                right = false;
+                            }
+                            if(recognition.getRight() > 350 && recognition.getTop() > 700){
+
+                                left = false;
+                                center = true;
+                                right = false;
+
+                            }
+
+                        }
+
                     }
+
                     telemetry.update();
                 }
 
