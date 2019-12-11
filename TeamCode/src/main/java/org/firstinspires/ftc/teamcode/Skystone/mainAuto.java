@@ -540,7 +540,6 @@ public class mainAuto extends LinearOpMode {
         String arrow0 = " ";
         String arrow1 = " ";
         String arrow2 = " ";
-        String arrow3 = " ";
 
         boolean dpadPressedUp = false;
         boolean dpadPressedDown = false;
@@ -556,9 +555,7 @@ public class mainAuto extends LinearOpMode {
 
 //        if (teamIsRed) colorIndex = 1;
 //
-        String[] foundationPos = {"foundation horizontal", "foundation vertical"};
-        int foundPosIndex = 0;
-        if (foundationHoz == false) foundPosIndex = 1;
+
 //        if (testBot) botIndex = 1;
 
         int currentEdit = 1;
@@ -573,7 +570,6 @@ public class mainAuto extends LinearOpMode {
             telemetry.addLine().addData(arrow0, waitTime1).addData("wait time", arrow0);
             telemetry.addLine().addData(arrow1, colorIndex).addData(color[colorIndex], arrow1);
             telemetry.addLine().addData(arrow2, positionIndex).addData(position[positionIndex], arrow2);
-            telemetry.addLine().addData(arrow3, foundPosIndex).addData(foundationPos[foundPosIndex], arrow3);
 
 
 //            telemetry.addLine().addData(arrow4, "Color       ");
@@ -584,7 +580,7 @@ public class mainAuto extends LinearOpMode {
             } else if (gamepad1.dpad_down == false && dpadPressedDown) {
                 dpadPressedDown = false;
                 currentEdit += 1;
-                if (currentEdit > 3) {
+                if (currentEdit > 2) {
                     currentEdit = -1;
                 }
             }
@@ -595,7 +591,7 @@ public class mainAuto extends LinearOpMode {
                 dpadPressedUp = false;
                 currentEdit -= 1;
                 if (currentEdit < -1) {
-                    currentEdit = 3;
+                    currentEdit = 2;
                 }
             }
 
@@ -618,11 +614,6 @@ public class mainAuto extends LinearOpMode {
                 arrow2 = "<>";
             } else {
                 arrow2 = "    ";
-            }
-            if (currentEdit == 3) {
-                arrow3 = "<>";
-            } else {
-                arrow3 = "    ";
             }
 
 
@@ -667,15 +658,6 @@ public class mainAuto extends LinearOpMode {
 
                     }
                 }
-                if (currentEdit == 3) {
-                    if (foundPosIndex == 0) {
-                        foundPosIndex = 1;
-                        foundationHoz = false;
-                    } else {
-                        foundPosIndex = 0;
-                        foundationHoz = true;
-                    }
-                }
 
 
             }
@@ -718,15 +700,7 @@ public class mainAuto extends LinearOpMode {
 
                     }
                 }
-                if (currentEdit == 3) {
-                    if (foundPosIndex == 0) {
-                        foundPosIndex = 1;
-                        foundationHoz = false;
-                    } else {
-                        foundPosIndex = 0;
-                        foundationHoz = true;
-                    }
-                }
+
 
 
             }
