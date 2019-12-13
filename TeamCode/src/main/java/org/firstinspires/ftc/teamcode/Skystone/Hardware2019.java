@@ -58,6 +58,8 @@ public class Hardware2019
     public DcMotor  rightRear   = null;
     public Servo clamp1 = null;
     public Servo clamp2 = null;
+    public CRServo  vex1  = null;
+    public CRServo  vex2  = null;
 
 
 
@@ -105,6 +107,9 @@ public class Hardware2019
    // DistanceSensor sensor;
 
     ColorSensor sensorColor;
+    DistanceSensor dis1;
+    DistanceSensor dis2;
+
     /* Constructor */
     public Hardware2019(){
 
@@ -124,7 +129,7 @@ public class Hardware2019
         //LEDpattern =  com.qualcomm.hardware.rev.RevBlinkinLedDriver.BlinkinPattern.RAINBOW_RAINBOW_PALETTE;
 
         clamp1 = hwMap.get(Servo.class, "clamp_1");
-        clamp1 = hwMap.get(Servo.class, "clamp_2");
+        clamp2 = hwMap.get(Servo.class, "clamp_2");
 
 
         // Define and Initialize Motors
@@ -132,6 +137,8 @@ public class Hardware2019
         rightFront = hwMap.get(DcMotor.class, "right_front");
         leftRear  = hwMap.get(DcMotor.class, "left_rear");
         rightRear = hwMap.get(DcMotor.class, "right_rear");
+        vex1 = hwMap.get(CRServo.class, "vex_1");
+        //vex2 = hwMap.get(CRServo.class, "vex_2");
 
         // this should be for neverest  & using it for Matrix/yellowjackets as well.
          leftFront.setDirection(DcMotor.Direction.FORWARD);
@@ -213,6 +220,9 @@ public class Hardware2019
 
         //sensor = hwMap.get(DistanceSensor.class, "sensor");
         sensorColor = hwMap.get(ColorSensor.class, "sensor_color");
+        dis1 = hwMap.get(DistanceSensor.class, "dis_sensor1");
+        dis2 = hwMap.get(DistanceSensor.class, "dis_sensor2");
+
 
 
 

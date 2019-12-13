@@ -15,7 +15,7 @@ import java.util.Date;
 
 
 @TeleOp(name="Vexmotor_Test", group="8045")  // @Autonomous(...) is the other common choice
-@Disabled
+//@Disabled
 public class vexmotor extends OpMode
 {
     /* Declare OpMode members. */
@@ -32,7 +32,7 @@ public class vexmotor extends OpMode
         telemetry.addData("Status", "Initialized");
 
         //Initalize Vex Motor to same name in robot config file
-        vexMotor = hardwareMap.crservo.get("sweeper");
+        vexMotor = hardwareMap.crservo.get("vex_1");
 
 
     }

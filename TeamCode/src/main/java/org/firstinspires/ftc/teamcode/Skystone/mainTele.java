@@ -33,6 +33,7 @@ public class mainTele extends OpMode {
     //Back mode
     public boolean frontIsForward = false;
     public boolean rightbtnIsReleased = true;
+    public boolean beginTrack = false;
 
     //Drive type
 
@@ -101,9 +102,12 @@ public class mainTele extends OpMode {
             rightbtnIsReleased = true;
         }
 
-
         /**  set lights color  **/
         /** 2M Distance Sensor Code  */
+
+        telemetry.addData("Left range", String.format("%.01f mm", Cosmo.dis1.getDistance(DistanceUnit.MM)));
+        telemetry.addData("Right range", String.format("%.01f mm", Cosmo.dis2.getDistance(DistanceUnit.MM)));
+
 
 //        Color.RGBToHSV((int)(Cosmo.sensorColor.red() * 255), (int)(Cosmo.sensorColor.green() * 255), (int)(Cosmo.sensorColor.blue() * 255), hsvValues);
 //        if (hsvValues[0] > grayRedBorder && hsvValues[0] < grayBlueBorder ) {
@@ -136,20 +140,83 @@ public class mainTele extends OpMode {
 
         //telemetry.addData("range", String.format("%.01f mm", Cosmo.sensor.getDistance(DistanceUnit.MM)));
 
-        /** CONTROLS FOR FOUNDATION CLAMP SERVOS **/
 
-        if(gamepad1.dpad_down == true){
-
-            Cosmo.clamp1.setPosition(0.4);
-            Cosmo.clamp2.setPosition(0.4);
+        if (gamepad1.y) {
+            Cosmo.vex1.setPower(0.88);
+        } else if (gamepad1.a) {
+            Cosmo.vex1.setPower(-0.88);
+        } else {
+            Cosmo.vex1.setPower(0.0);
         }
+
+
+
+
+        /** CONTROLS FOR FOUNDATION CLAMP SERVOS **/
 
         if(gamepad1.dpad_up == true){
 
-            Cosmo.clamp1.setPosition(0.8);
-            Cosmo.clamp2.setPosition(0.8);
+            Cosmo.clamp1.setPosition(0.7);
+            Cosmo.clamp2.setPosition(0.3);
+
         }
-  
+
+        if(gamepad1.dpad_down == true){
+
+            Cosmo.clamp1.setPosition(0.3);
+            Cosmo.clamp2.setPosition(0.7);
+
+        }
+
+        /** DISTANCE SENSOR FOUNDATION TRACKING SOFTWARE **/
+
+        if(gamepad1.x){
+            if(Cosmo.dis1.getDistance(DistanceUnit.MM) < 250 || Cosmo.dis2.getDistance(DistanceUnit.MM) < 250) {
+                beginTrack = true;
+            }
+
+            if(beginTrack){
+//            while(Cosmo.dis1.getDistance(DistanceUnit.MM) > 40 || Cosmo.dis2.getDistance(DistanceUnit.MM) > 40) {
+//                Cosmo.leftFront.setPower(0.2);
+//                Cosmo.leftRear.setPower(0.2);
+//                Cosmo.rightFront.setPower(0.2);
+//                Cosmo.rightRear.setPower(0.2);
+//            }
+
+
+                if(Cosmo.dis1.getDistance(DistanceUnit.MM) > Cosmo.dis2.getDistance(DistanceUnit.MM)){
+
+
+                    while(Math.abs(Cosmo.dis1.getDistance(DistanceUnit.MM) - Cosmo.dis2.getDistance(DistanceUnit.MM)) > 5) {
+                        Cosmo.leftFront.setPower(0.2);
+                        Cosmo.leftRear.setPower(0.2);
+                        Cosmo.rightFront.setPower(-0.2);
+                        Cosmo.rightRear.setPower(-0.2);
+                    }
+
+                }
+
+                if(Cosmo.dis1.getDistance(DistanceUnit.MM) < Cosmo.dis2.getDistance(DistanceUnit.MM)){
+
+
+                    while(Math.abs(Cosmo.dis1.getDistance(DistanceUnit.MM) - Cosmo.dis2.getDistance(DistanceUnit.MM)) > 5) {
+                        Cosmo.leftFront.setPower(-0.2);
+                        Cosmo.leftRear.setPower(-0.2);
+                        Cosmo.rightFront.setPower(0.2);
+                        Cosmo.rightRear.setPower(0.2);
+                    }
+
+                }
+
+                    beginTrack = false;
+
+
+            }
+
+
+
+        }
+
 
 
 
