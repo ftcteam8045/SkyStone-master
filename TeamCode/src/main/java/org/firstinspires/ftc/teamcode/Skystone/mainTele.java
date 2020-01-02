@@ -34,6 +34,8 @@ public class mainTele extends OpMode {
     public boolean frontIsForward = false;
     public boolean rightbtnIsReleased = true;
     public boolean beginTrack = false;
+public boolean intakeOnF = false;
+    public boolean intakeOnB = false;
 
     //Drive type
 
@@ -48,7 +50,6 @@ public class mainTele extends OpMode {
 
 
     public double multiplier = 0.1818;
-
 
 
     @Override
@@ -91,6 +92,7 @@ public class mainTele extends OpMode {
         telemetry.addData("Green", Cosmo.sensorColor.green());
         telemetry.addData("Blue ", Cosmo.sensorColor.blue());
         telemetry.addData("Hue", hsvValues[0]);
+
 //        // BACK mode
 
         if (gamepad1.right_stick_button) {
@@ -156,17 +158,48 @@ public class mainTele extends OpMode {
 
         if(gamepad1.dpad_up == true){
 
-            Cosmo.clamp1.setPosition(0.7);
-            Cosmo.clamp2.setPosition(0.3);
+            Cosmo.clamp1.setPosition(0.51);
+            Cosmo.clamp2.setPosition(0.49);
 
         }
-
         if(gamepad1.dpad_down == true){
 
-            Cosmo.clamp1.setPosition(0.3);
-            Cosmo.clamp2.setPosition(0.7);
+            Cosmo.clamp1.setPosition(0.38);
+            Cosmo.clamp2.setPosition(0.62);
 
         }
+        /** INTAKE CONTROLS IN TELE **/
+
+        if(gamepad1.right_trigger > 0.9){
+            if(intakeOnF || intakeOnB){
+                Cosmo.leftIntake.setPower(0.0);
+                Cosmo.rightIntake.setPower(0.0);
+                intakeOnF = false;
+                intakeOnB = false;
+            } else {
+                Cosmo.leftIntake.setPower(0.8);
+                Cosmo.rightIntake.setPower(0.8);
+                intakeOnF = true;
+                intakeOnB = false;
+            }
+        }
+        if(gamepad1.right_bumper){
+            if(intakeOnB || intakeOnF) {
+                Cosmo.leftIntake.setPower(0.0);
+                Cosmo.rightIntake.setPower(0.0);
+                intakeOnB = false;
+                intakeOnF = false;
+
+            } else {
+                Cosmo.leftIntake.setPower(-0.4);
+                Cosmo.rightIntake.setPower(-0.4);
+                intakeOnF = false;
+                intakeOnB = true;
+            }
+        }
+
+
+
 
         /** DISTANCE SENSOR FOUNDATION TRACKING SOFTWARE **/
 

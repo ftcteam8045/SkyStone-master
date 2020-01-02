@@ -49,22 +49,17 @@ public class mainAuto extends LinearOpMode {
     private VuforiaLocalizer vuforia;
     private TFObjectDetector tfod;
     public int waitTime1 = 0;
-    public int driveDis1 = 16;
-    public int driveDis2 = 22;
-    public int driveDis3 = 10; //forward+backward
-    public int driveDis4 = 30;
     public boolean skystonePosition = true;
     public boolean grabFoundation = false;
-    public boolean foundationHoz = true;
-    public boolean teamIsRed = true;
+    public boolean teamIsRed = false;
     public boolean left = false;
     public boolean center = false;
     public boolean right = true;
     public double grayHueValue = 90.0;  // color sensor values
-    public double redHueValue  =  5;
+    public double redHueValue = 5;
     public double blueHueValue = 189;
-    public double grayRedBorder  = (grayHueValue + redHueValue  ) / 2;
-    public double grayBlueBorder = (grayHueValue + blueHueValue ) / 2;
+    public double grayRedBorder = (grayHueValue + redHueValue) / 2;
+    public double grayBlueBorder = (grayHueValue + blueHueValue) / 2;
     // hsvValues is an array that will hold the hue, saturation, and value information.
     public float hsvValues[] = {0F, 0F, 0F};
     // values is a reference to the hsvValues array.
@@ -112,11 +107,11 @@ public class mainAuto extends LinearOpMode {
         telemetry.addData("Status", "Ready to run");    //
         telemetry.update();
         // AutoTransitioner used before waitForStart()
-       // if (teamIsRed) {
-   //         AutoTransitioner.transitionOnStop(this, "mainTele");   // get ready for teleop at the end of auto
-      //  } else {
-       //     AutoTransitioner.transitionOnStop(this, "MainTeleBlue");   // get ready for teleop at the end of auto
-       // }
+        // if (teamIsRed) {
+        //         AutoTransitioner.transitionOnStop(this, "mainTele");   // get ready for teleop at the end of auto
+        //  } else {
+        //     AutoTransitioner.transitionOnStop(this, "MainTeleBlue");   // get ready for teleop at the end of auto
+        // }
         /**************************************************************
          // Actual Init  loop
          *************************************************************/
@@ -135,9 +130,9 @@ public class mainAuto extends LinearOpMode {
 
                     telemetry.addLine(" Press Left Joystick for Edit");
                     telemetry.addLine("------------------------------------------");
-                    if(left) telemetry.addLine("LEFT");
-                    if(center) telemetry.addLine("CENTER");
-                    if(right) telemetry.addLine("RIGHT");
+                    if (left) telemetry.addLine("LEFT");
+                    if (center) telemetry.addLine("CENTER");
+                    if (right) telemetry.addLine("RIGHT");
 
                     if (grabFoundation) {
                         telemetry.addData("Grab Partner Foundation: ", "TRUE");
@@ -152,11 +147,7 @@ public class mainAuto extends LinearOpMode {
                     } else {
                         telemetry.addData("", "Foundation Position");
                     }
-                    if (foundationHoz) {
-                        telemetry.addData("", "Foundation Horizontal");
-                    } else {
-                        telemetry.addData("", "Foundation Vertical");
-                    }
+
 
                     // step through the list of recognitions and display boundary info.
                     int i = 0;
@@ -169,14 +160,14 @@ public class mainAuto extends LinearOpMode {
 
                         telemetry.addData("", recognition.getRight());
 
-                        if(recognition.getLabel() == "Skystone"){
+                        if (recognition.getLabel() == "Skystone") {
 
-                            if(recognition.getRight() < 350 && recognition.getTop() > 700) {
+                            if (recognition.getRight() < 350 && recognition.getTop() > 700) {
                                 left = true;
                                 center = false;
                                 right = false;
                             }
-                            if(recognition.getRight() > 350 && recognition.getTop() > 700){
+                            if (recognition.getRight() > 350 && recognition.getTop() > 700) {
 
                                 left = false;
                                 center = true;
@@ -215,30 +206,14 @@ public class mainAuto extends LinearOpMode {
         tfod.deactivate();
 
 
-        if(teamIsRed) { /** RED SIDE CODE **/
+        if (teamIsRed) { /** RED SIDE CODE **/
 
             if (skystonePosition) {            /** skystone zone drive  **/
 
                 /** scans for skystone first **/
-//            mecanumDrive(0.5, driveDis3, 0, 0); //drive forward
-//            sleep(200);
-//            mecanumTurn(0.5, -90); // turn left
-//            sleep(200);
-//            mecanumDrive(2.5, driveDis4, 0, 0); // drive forward
-//            sleep(200);
-//            /** place down block? **/
-//            mecanumDrive(0.5, -driveDis3, 0, 0); //drive backward
-                mecanumDrivetoTape(0.3, driveDis3 * 4, 0, 0);  //drive towards base
+
 
             } else {             /** foundation zone drive  **/
-
-//            mecanumDrive(0.5, driveDis1,0, 0);       // drive forward
-//            sleep(200);
-//            mecanumDrive(.5, -driveDis1,0,0);        // drive backwards
-//            sleep(200);
-//            mecanumTurn(0.5, 90); //turn right
-//            sleep(200);
-//            mecanumDrive(0.5, driveDis1,0,0); //drive forward
 
 
             }
@@ -247,15 +222,31 @@ public class mainAuto extends LinearOpMode {
             if (skystonePosition) {            /** skystone zone drive  **/
 
                 /** scans for skystone first **/
-//            mecanumDrive(0.5, driveDis3, 0, 0); //drive forward
-//            sleep(200);
-//            mecanumTurn(0.5, -90); // turn left
-//            sleep(200);
-//            mecanumDrive(2.5, driveDis4, 0, 0); // drive forward
-//            sleep(200);
-//            /** place down block? **/
-//            mecanumDrive(0.5, -driveDis3, 0, 0); //drive backward
-                mecanumDrivetoTape(0.3, driveDis3 * 4, 0, 0);  //drive towards base
+                mecanumDrive(0.4, -14, 0, 0); //drive forward
+                sleep(200);
+                grabSkystone();
+                mecanumTurn(1.0, -90); // turn right
+                sleep(200);
+                mecanumDrive(0.5, 48, -90, 0); // drive forward
+                sleep(200);
+                mecanumTurn(1.0, -180); // turn right again
+                mecanumDrive(0.5, 6, -180, 0); //drive forward to foundation
+                mecanumDrive(0.2, 3, -180, 0); //drive forward to foundation slow
+                Cosmo.clamp1.setPosition(0.3);  //close
+                Cosmo.clamp2.setPosition(0.7);      //close
+                sleep(500);
+                mecanumDrive(0.5, -9, -180, 0); //drive back from foundation
+
+                /** place down block? **/
+                mecanumTurn(1.0, -90); // turn left
+                mecanumDrive(0.5, 5, -90, 0); //place foundation
+                Cosmo.clamp1.setPosition(0.7);      //open
+                Cosmo.clamp2.setPosition(0.3);      //open
+                mecanumDrive(0.5, -6, -90, 0); //drive back from foundation
+                mecanumDrive(0.5, -10, -90, 0); //drive backward
+                mecanumDrivetoTape(0.3, -10 * 4, -90, 0);  //drive towards base
+                mecanumDrive(0.2, 3.5, -90, 0); //place foundation
+
 
             } else {             /** foundation zone drive  **/
 
@@ -269,8 +260,6 @@ public class mainAuto extends LinearOpMode {
 
 
             }
-
-
 
 
         }
@@ -323,6 +312,52 @@ public class mainAuto extends LinearOpMode {
     //  Drive routine using the IMU and Mecanum wheels
     //  Robot Orientation is to the field
     //  Drive direction is from the robot
+
+    public void grabSkystone() {
+
+
+        if (teamIsRed) {  //TEAM IS RED
+            if (left) {
+
+            }
+
+            if (center) {
+
+
+            }
+
+            if (right) {
+
+                mecanumTurn(1.0, -45); // turn right
+                //TURN ON INTAKE HERE
+                mecanumDrive(0.4, -6, -45, 0);
+                sleep(400);
+                mecanumDrive(0.4, 6, -45, 0);
+
+            }
+
+        } else { //TEAM IS BLUE
+            if (left) {
+
+            }
+
+            if (center) {
+
+
+            }
+
+            if (right) {
+
+                mecanumTurn(1.0, -45); // turn right
+                //TURN ON INTAKE HERE
+                mecanumDrive(0.4, -6, -45, 0);
+                sleep(400);
+                mecanumDrive(0.4, 6, -45, 0);
+
+            }
+        }
+
+    }
 
     public void mecanumDrive(double speed, double distance, double robot_orientation, double drive_direction) {
         double max;
@@ -398,7 +433,7 @@ public class mainAuto extends LinearOpMode {
     }
 
 
-     //Turn using the IMU and meccanum drive
+    //Turn using the IMU and meccanum drive
     public void mecanumTurn(double speed, double target_heading) {
         if (speed > 1) speed = 1.0;
         //else if(speed <= 0) speed = 0.1;
@@ -463,11 +498,11 @@ public class mainAuto extends LinearOpMode {
          *  could also say  'while it's not withing a little bit of the gray reading'
          *
          * **/
-        Color.RGBToHSV((int)(Cosmo.sensorColor.red() * 255), (int)(Cosmo.sensorColor.green() * 255), (int)(Cosmo.sensorColor.blue() * 255), hsvValues);
+        Color.RGBToHSV((int) (Cosmo.sensorColor.red() * 255), (int) (Cosmo.sensorColor.green() * 255), (int) (Cosmo.sensorColor.blue() * 255), hsvValues);
 
         while (((abs(Cosmo.rightRear.getCurrentPosition() - right_start) + abs(Cosmo.leftRear.getCurrentPosition() - left_start)) / 2 < abs(moveCounts))
                 && opModeIsActive() &&    // opmode has to be active
-                (hsvValues[0] > grayRedBorder && hsvValues[0] < grayBlueBorder ) ) {         //  stop if the hue goes outside of the gray range
+                (hsvValues[0] > grayRedBorder && hsvValues[0] < grayBlueBorder)) {         //  stop if the hue goes outside of the gray range
             //Determine correction
             double correction = robot_orientation - getheading();
             if (correction <= -180) {
@@ -509,7 +544,7 @@ public class mainAuto extends LinearOpMode {
 
 //            RobotLog.ii("[GromitIR] ", Double.toString(18.7754*Math.pow(sharpIRSensor.getVoltage(),-1.51)), Integer.toString(left_front.getCurrentPosition()));
             // update the Hue
-            Color.RGBToHSV((int)(Cosmo.sensorColor.red() * 255), (int)(Cosmo.sensorColor.green() * 255), (int)(Cosmo.sensorColor.blue() * 255), hsvValues);
+            Color.RGBToHSV((int) (Cosmo.sensorColor.red() * 255), (int) (Cosmo.sensorColor.green() * 255), (int) (Cosmo.sensorColor.blue() * 255), hsvValues);
 
         }
         //gromit.driveTrain.stopMotors();
@@ -518,7 +553,6 @@ public class mainAuto extends LinearOpMode {
         Cosmo.rightRear.setPower(0.0);
         Cosmo.leftRear.setPower(0.0);
     }
-
 
 
     public float getheading() {
@@ -617,9 +651,6 @@ public class mainAuto extends LinearOpMode {
             }
 
 
-
-
-
             if (gamepad1.dpad_left) {
                 dpadPressedLeft = true;
             } else if (gamepad1.dpad_left == false && dpadPressedLeft) {
@@ -683,8 +714,8 @@ public class mainAuto extends LinearOpMode {
                         //Cosmo.LEDDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_BLUE);
                     } else {
                         colorIndex = 1;
-                       teamIsRed = true;
-                       // Cosmo.LEDDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_RED);
+                        teamIsRed = true;
+                        // Cosmo.LEDDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_RED);
                     }
                 }
                 if (currentEdit == 2) {
@@ -700,7 +731,6 @@ public class mainAuto extends LinearOpMode {
 
                     }
                 }
-
 
 
             }

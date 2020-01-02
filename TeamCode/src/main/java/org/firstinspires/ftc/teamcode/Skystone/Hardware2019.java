@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode.Skystone;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -56,6 +57,8 @@ public class Hardware2019
     public DcMotor  rightFront  = null;
     public DcMotor  leftRear    = null;
     public DcMotor  rightRear   = null;
+    public DcMotor  leftIntake    = null;
+    public DcMotor  rightIntake   = null;
     public Servo clamp1 = null;
     public Servo clamp2 = null;
     public CRServo  vex1  = null;
@@ -106,9 +109,9 @@ public class Hardware2019
 
    // DistanceSensor sensor;
 
-    ColorSensor sensorColor;
-    DistanceSensor dis1;
-    DistanceSensor dis2;
+    public ColorSensor sensorColor;
+    public DistanceSensor dis1;
+    public DistanceSensor dis2;
 
     /* Constructor */
     public Hardware2019(){
@@ -137,6 +140,8 @@ public class Hardware2019
         rightFront = hwMap.get(DcMotor.class, "right_front");
         leftRear  = hwMap.get(DcMotor.class, "left_rear");
         rightRear = hwMap.get(DcMotor.class, "right_rear");
+        leftIntake  = hwMap.get(DcMotor.class, "left_intake");
+        rightIntake = hwMap.get(DcMotor.class, "right_intake");
         vex1 = hwMap.get(CRServo.class, "vex_1");
         //vex2 = hwMap.get(CRServo.class, "vex_2");
 
@@ -145,14 +150,14 @@ public class Hardware2019
          leftRear.setDirection(DcMotor.Direction.FORWARD);
          rightFront.setDirection(DcMotor.Direction.REVERSE);
          rightRear.setDirection(DcMotor.Direction.REVERSE);
-
-
+         rightIntake.setDirection(DcMotor.Direction.REVERSE);
 //        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
+        leftIntake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightIntake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
 ////this is for Tetrix
@@ -168,7 +173,8 @@ public class Hardware2019
         leftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
+        leftIntake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightIntake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
 
@@ -177,7 +183,8 @@ public class Hardware2019
         rightFront.setPower(0);
         leftRear.setPower(0);
         rightRear.setPower(0);
-
+        leftIntake.setPower(0);
+        rightIntake.setPower(0);
 
 
         // Define and Initialize Motors
@@ -187,7 +194,8 @@ public class Hardware2019
         rightRear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
+        leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
 
@@ -222,8 +230,6 @@ public class Hardware2019
         sensorColor = hwMap.get(ColorSensor.class, "sensor_color");
         dis1 = hwMap.get(DistanceSensor.class, "dis_sensor1");
         dis2 = hwMap.get(DistanceSensor.class, "dis_sensor2");
-
-
 
 
 
