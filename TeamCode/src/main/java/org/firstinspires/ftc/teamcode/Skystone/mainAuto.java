@@ -50,7 +50,6 @@ public class mainAuto extends LinearOpMode {
     private TFObjectDetector tfod;
     public int waitTime1 = 0;
     public boolean skystonePosition = true;
-    public boolean grabFoundation = false;
     public boolean teamIsRed = false;
     public boolean left = false;
     public boolean center = false;
@@ -134,9 +133,6 @@ public class mainAuto extends LinearOpMode {
                     if (center) telemetry.addLine("CENTER");
                     if (right) telemetry.addLine("RIGHT");
 
-                    if (grabFoundation) {
-                        telemetry.addData("Grab Partner Foundation: ", "TRUE");
-                    }
                     if (teamIsRed) {
                         telemetry.addData("", "RED");
                     } else {
@@ -162,19 +158,45 @@ public class mainAuto extends LinearOpMode {
 
                         if (recognition.getLabel() == "Skystone") {
 
-                            if (recognition.getRight() < 350 && recognition.getTop() > 700) {
-                                left = true;
-                                center = false;
-                                right = false;
+                            if(!teamIsRed) { //BLUE SIDE AUTO DETECTION NUMBERS
+                                if (recognition.getLeft() < 300 && recognition.getTop() > 480) {
+                                    left = true;
+                                    center = false;
+                                    right = false;
+                                } else if (recognition.getLeft() > 300 && recognition.getTop() > 480) {
+
+                                    left = false;
+                                    center = true;
+                                    right = false;
+
+                                } else {
+
+                                    left = false;
+                                    center = false;
+                                    right = true;
+
+                                }
+
+                            } else {   //RED SIDE AUTO DETECTION NUMBERS
+                                if (recognition.getRight() < 350 && recognition.getTop() > 480) {
+                                    left = true;
+                                    center = false;
+                                    right = false;
+                                } else if (recognition.getRight() > 350 && recognition.getTop() > 480) {
+
+                                    left = false;
+                                    center = true;
+                                    right = false;
+
+                                }else {
+
+                                    left = false;
+                                    center = false;
+                                    right = true;
+
+                                }
+
                             }
-                            if (recognition.getRight() > 350 && recognition.getTop() > 700) {
-
-                                left = false;
-                                center = true;
-                                right = false;
-
-                            }
-
                         }
 
                     }
@@ -222,30 +244,36 @@ public class mainAuto extends LinearOpMode {
             if (skystonePosition) {            /** skystone zone drive  **/
 
                 /** scans for skystone first **/
-                mecanumDrive(0.4, -14, 0, 0); //drive forward
-                sleep(200);
+                mecanumDrive(0.4, -15, 0, 0); //drive forward
                 grabSkystone();
+                Cosmo.clamp1.setPosition(0.51);
+                Cosmo.clamp2.setPosition(0.49);
                 mecanumTurn(1.0, -90); // turn right
-                sleep(200);
-                mecanumDrive(0.5, 48, -90, 0); // drive forward
-                sleep(200);
+                mecanumDrive(1.0, 60, -90, 0); // drive forward
                 mecanumTurn(1.0, -180); // turn right again
-                mecanumDrive(0.5, 6, -180, 0); //drive forward to foundation
-                mecanumDrive(0.2, 3, -180, 0); //drive forward to foundation slow
-                Cosmo.clamp1.setPosition(0.3);  //close
-                Cosmo.clamp2.setPosition(0.7);      //close
-                sleep(500);
-                mecanumDrive(0.5, -9, -180, 0); //drive back from foundation
-
-                /** place down block? **/
+                sleep(100);
+                mecanumDrive(0.8, -10, -180, 0); //drive back to drop block
+                sleep(100);
+                Cosmo.leftIntake.setPower(-0.4);                  /** place down block - reverse intake motors **/
+                Cosmo.rightIntake.setPower(-0.4);
+                mecanumDrive(0.2, 4, -180, 0); //drive forward to foundation slow
+                Cosmo.leftIntake.setPower(0.0);   // turn off intake motors
+                Cosmo.rightIntake.setPower(0.0);
+                mecanumDrive(0.5, 10, -180, 0); //drive forward to foundation
+                mecanumDrive(0.4, 7.5, -170, 0); //drive forward to foundation slow
+                sleep(200);
+                Cosmo.clamp1.setPosition(0.37);
+                Cosmo.clamp2.setPosition(0.63);
+                sleep(200);
+                mecanumDrive(0.7, -21, -150, 20); //drive back from foundation
+                mecanumDrive(0.8, -8, -90, 0); //drive back from foundation
                 mecanumTurn(1.0, -90); // turn left
-                mecanumDrive(0.5, 5, -90, 0); //place foundation
-                Cosmo.clamp1.setPosition(0.7);      //open
-                Cosmo.clamp2.setPosition(0.3);      //open
-                mecanumDrive(0.5, -6, -90, 0); //drive back from foundation
-                mecanumDrive(0.5, -10, -90, 0); //drive backward
-                mecanumDrivetoTape(0.3, -10 * 4, -90, 0);  //drive towards base
-                mecanumDrive(0.2, 3.5, -90, 0); //place foundation
+                mecanumDrive(0.6, 12, -90, 0); //place foundation
+                Cosmo.clamp1.setPosition(0.51);
+                Cosmo.clamp2.setPosition(0.49);
+                mecanumDrive(0.5, 8.5, -90, -90); //strafe over
+                mecanumDrivetoTape(0.5, -25, -90, 0);  //drive until tape is detected
+                grabSkystoneAgain();
 
 
             } else {             /** foundation zone drive  **/
@@ -319,6 +347,7 @@ public class mainAuto extends LinearOpMode {
         if (teamIsRed) {  //TEAM IS RED
             if (left) {
 
+
             }
 
             if (center) {
@@ -328,16 +357,41 @@ public class mainAuto extends LinearOpMode {
 
             if (right) {
 
-                mecanumTurn(1.0, -45); // turn right
-                //TURN ON INTAKE HERE
-                mecanumDrive(0.4, -6, -45, 0);
-                sleep(400);
-                mecanumDrive(0.4, 6, -45, 0);
 
             }
 
         } else { //TEAM IS BLUE
             if (left) {
+                mecanumTurn(1.0, -65); // turn right
+                mecanumDrive(0.7, -14, -75, 78);
+                Cosmo.leftIntake.setPower(0.8);
+                Cosmo.rightIntake.setPower(0.8);
+                mecanumDrive(0.35, -2.5, -85, 0);
+                Cosmo.leftIntake.setPower(0.0);
+                Cosmo.rightIntake.setPower(0.0);
+                mecanumDrive(0.8, 14, -80, 80);
+            }
+
+            if (center) {
+
+
+            }
+
+            if (right) {
+
+
+            }
+        }
+
+    }
+
+
+    public void grabSkystoneAgain() {
+
+
+        if (teamIsRed) {  //TEAM IS RED
+            if (left) {
+
 
             }
 
@@ -348,16 +402,47 @@ public class mainAuto extends LinearOpMode {
 
             if (right) {
 
-                mecanumTurn(1.0, -45); // turn right
-                //TURN ON INTAKE HERE
-                mecanumDrive(0.4, -6, -45, 0);
-                sleep(400);
-                mecanumDrive(0.4, 6, -45, 0);
+
+            }
+
+        } else { //TEAM IS BLUE
+            if (left) {
+                mecanumDrive(0.5, -15, -90, 0); // drive back towards quarry
+                mecanumTurn(1.0, -40);  // turn to face other skytone
+                Cosmo.leftIntake.setPower(0.8);
+                Cosmo.rightIntake.setPower(0.8);
+                mecanumDrive(0.3, -13.5, -40, 0); // drive back towards other skytone
+                Cosmo.leftIntake.setPower(0.0);
+                Cosmo.rightIntake.setPower(0.0);
+                mecanumDrive(0.3, 13.5, -40, 0); // back up
+                mecanumTurn(1.0, -90);
+                mecanumDrivetoTape(0.3, 10, -90, 0);  //drive until tape is detected
+                mecanumDrive(0.8, 15, -90, 0);  //drive until tape is detected
+                mecanumTurn(1.0, 89);
+                Cosmo.leftIntake.setPower(-0.4);
+                Cosmo.rightIntake.setPower(-0.4);
+                mecanumDrive(0.3, 5, 90, 0);  //drive back while dropping block
+                Cosmo.leftIntake.setPower(0.0);
+                Cosmo.rightIntake.setPower(0.0);
+                mecanumDrivetoTape(0.5, 15, 90, 0);  //drive until tape is detected
+
+
+
+            }
+
+            if (center) {
+
+
+            }
+
+            if (right) {
+
 
             }
         }
 
     }
+
 
     public void mecanumDrive(double speed, double distance, double robot_orientation, double drive_direction) {
         double max;
@@ -600,7 +685,6 @@ public class mainAuto extends LinearOpMode {
             telemetry.addLine("");
 
             //telemetry.addLine().addData("", currentEdit).addData("current edit number", ' ');
-            telemetry.addLine().addData(arrow01, grabFoundation).addData("grab foundation?", arrow01);
             telemetry.addLine().addData(arrow0, waitTime1).addData("wait time", arrow0);
             telemetry.addLine().addData(arrow1, colorIndex).addData(color[colorIndex], arrow1);
             telemetry.addLine().addData(arrow2, positionIndex).addData(position[positionIndex], arrow2);
@@ -615,7 +699,7 @@ public class mainAuto extends LinearOpMode {
                 dpadPressedDown = false;
                 currentEdit += 1;
                 if (currentEdit > 2) {
-                    currentEdit = -1;
+                    currentEdit = 0;
                 }
             }
 
@@ -624,16 +708,11 @@ public class mainAuto extends LinearOpMode {
             } else if (gamepad1.dpad_up == false && dpadPressedUp) {
                 dpadPressedUp = false;
                 currentEdit -= 1;
-                if (currentEdit < -1) {
+                if (currentEdit < 0) {
                     currentEdit = 2;
                 }
             }
 
-            if (currentEdit == -1) {
-                arrow01 = "<>";
-            } else {
-                arrow01 = "    ";
-            }
             if (currentEdit == 0) {
                 arrow0 = "<>";
             } else {
@@ -655,13 +734,6 @@ public class mainAuto extends LinearOpMode {
                 dpadPressedLeft = true;
             } else if (gamepad1.dpad_left == false && dpadPressedLeft) {
                 dpadPressedLeft = false;
-                if (currentEdit == -1) {
-                    if (grabFoundation == true) {
-                        grabFoundation = false;
-                    } else {
-                        grabFoundation = true;
-                    }
-                }
                 if (currentEdit == 0) {
                     waitTime1 -= 1000;
                 }
@@ -680,12 +752,10 @@ public class mainAuto extends LinearOpMode {
                     if (positionIndex == 1) {
                         positionIndex = 0;
                         skystonePosition = false;
-                        grabFoundation = true;
 
                     } else {
                         positionIndex = 1;
                         skystonePosition = true;
-                        grabFoundation = false;
 
                     }
                 }
@@ -697,13 +767,7 @@ public class mainAuto extends LinearOpMode {
                 dpadPressedRight = true;
             } else if (gamepad1.dpad_right == false && dpadPressedRight) {
                 dpadPressedRight = false;
-                if (currentEdit == -1) {
-                    if (grabFoundation == true) {
-                        grabFoundation = false;
-                    } else {
-                        grabFoundation = true;
-                    }
-                }
+
                 if (currentEdit == 0) {
                     waitTime1 += 1000;
                 }
@@ -722,12 +786,10 @@ public class mainAuto extends LinearOpMode {
                     if (positionIndex == 1) {
                         positionIndex = 0;
                         skystonePosition = false;
-                        grabFoundation = true;
 
                     } else {
                         positionIndex = 1;
                         skystonePosition = true;
-                        grabFoundation = false;
 
                     }
                 }
