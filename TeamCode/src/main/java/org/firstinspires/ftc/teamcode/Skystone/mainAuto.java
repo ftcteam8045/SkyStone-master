@@ -251,27 +251,24 @@ public class mainAuto extends LinearOpMode {
                 mecanumTurn(1.0, -90); // turn right
                 mecanumDrive(1.0, 60, -90, 0); // drive forward
                 mecanumTurn(1.0, -180); // turn right again
-                sleep(100);
-                mecanumDrive(0.8, -10, -180, 0); //drive back to drop block
-                sleep(100);
-                Cosmo.leftIntake.setPower(-0.4);                  /** place down block - reverse intake motors **/
-                Cosmo.rightIntake.setPower(-0.4);
-                mecanumDrive(0.2, 4, -180, 0); //drive forward to foundation slow
-                Cosmo.leftIntake.setPower(0.0);   // turn off intake motors
-                Cosmo.rightIntake.setPower(0.0);
-                mecanumDrive(0.5, 10, -180, 0); //drive forward to foundation
+                mecanumDrive(0.5, 4, -180, 0); //drive forward to foundation
                 mecanumDrive(0.4, 7.5, -170, 0); //drive forward to foundation slow
                 sleep(200);
                 Cosmo.clamp1.setPosition(0.37);
                 Cosmo.clamp2.setPosition(0.63);
                 sleep(200);
-                mecanumDrive(0.7, -21, -150, 20); //drive back from foundation
-                mecanumDrive(0.8, -8, -90, 0); //drive back from foundation
+                mecanumDrive(0.6, -21, -150, 20); //drive back from foundation
+                mecanumDrive(0.7, -8, -90, 0); //drive back from foundation
                 mecanumTurn(1.0, -90); // turn left
+                mecanumDrive(0.5, 5, -90, 90); //strafe over
+                Cosmo.leftIntake.setPower(-0.4);                  /** place down block - reverse intake motors **/
+                Cosmo.rightIntake.setPower(-0.4);
                 mecanumDrive(0.6, 12, -90, 0); //place foundation
                 Cosmo.clamp1.setPosition(0.51);
                 Cosmo.clamp2.setPosition(0.49);
-                mecanumDrive(0.5, 8.5, -90, -90); //strafe over
+                Cosmo.leftIntake.setPower(0.0);   // turn off intake motors
+                Cosmo.rightIntake.setPower(0.0);
+                mecanumDrive(0.5, 12.5, -90, -90); //strafe over
                 mecanumDrivetoTape(0.5, -25, -90, 0);  //drive until tape is detected
                 grabSkystoneAgain();
 
@@ -407,24 +404,24 @@ public class mainAuto extends LinearOpMode {
 
         } else { //TEAM IS BLUE
             if (left) {
-                mecanumDrive(0.5, -15, -90, 0); // drive back towards quarry
+                mecanumDrive(0.5, -13.5, -90, 0); // drive back towards quarry
                 mecanumTurn(1.0, -40);  // turn to face other skytone
                 Cosmo.leftIntake.setPower(0.8);
                 Cosmo.rightIntake.setPower(0.8);
-                mecanumDrive(0.3, -13.5, -40, 0); // drive back towards other skytone
+                mecanumDrive(0.3, -13.2, -40, 0); // drive back towards other skytone
                 Cosmo.leftIntake.setPower(0.0);
                 Cosmo.rightIntake.setPower(0.0);
-                mecanumDrive(0.3, 13.5, -40, 0); // back up
+                mecanumDrive(0.3, 13.2, -40, 0); // back up
                 mecanumTurn(1.0, -90);
-                mecanumDrivetoTape(0.3, 10, -90, 0);  //drive until tape is detected
-                mecanumDrive(0.8, 15, -90, 0);  //drive until tape is detected
-                mecanumTurn(1.0, 89);
+                mecanumDrive(1.0, 22, -90, 0);  //drive until tape is detected
+                mecanumTurn(1.0, -270);
                 Cosmo.leftIntake.setPower(-0.4);
                 Cosmo.rightIntake.setPower(-0.4);
-                mecanumDrive(0.3, 5, 90, 0);  //drive back while dropping block
+                mecanumDrive(0.3, 5, -270, 0);  //drive back while dropping block
                 Cosmo.leftIntake.setPower(0.0);
                 Cosmo.rightIntake.setPower(0.0);
-                mecanumDrivetoTape(0.5, 15, 90, 0);  //drive until tape is detected
+                mecanumDrivetoTape(0.5, 15, -270, 0);  //drive until tape is detected
+                mecanumDrive(0.2, 2, -270, 0);  //drive until tape is detected
 
 
 
