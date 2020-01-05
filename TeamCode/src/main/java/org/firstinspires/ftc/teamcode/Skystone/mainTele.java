@@ -82,17 +82,17 @@ public boolean intakeOnF = false;
         timeLeft = 120 - runtime.seconds();
 
 
-        Color.RGBToHSV((int) (Cosmo.sensorColor.red() * SCALE_FACTOR),
-                (int) (Cosmo.sensorColor.green() * SCALE_FACTOR),
-                (int) (Cosmo.sensorColor.blue() * SCALE_FACTOR),
-                hsvValues);
-
-        // send the info back to driver station using telemetry function.
-        telemetry.addData("Alpha", Cosmo.sensorColor.alpha());
-        telemetry.addData("Red  ", Cosmo.sensorColor.red());
-        telemetry.addData("Green", Cosmo.sensorColor.green());
-        telemetry.addData("Blue ", Cosmo.sensorColor.blue());
-        telemetry.addData("Hue", hsvValues[0]);
+//        Color.RGBToHSV((int) (Cosmo.sensorColor.red() * SCALE_FACTOR),
+//                (int) (Cosmo.sensorColor.green() * SCALE_FACTOR),
+//                (int) (Cosmo.sensorColor.blue() * SCALE_FACTOR),
+//                hsvValues);
+//
+//        // send the info back to driver station using telemetry function.
+//        telemetry.addData("Alpha", Cosmo.sensorColor.alpha());
+//        telemetry.addData("Red  ", Cosmo.sensorColor.red());
+//        telemetry.addData("Green", Cosmo.sensorColor.green());
+//        telemetry.addData("Blue ", Cosmo.sensorColor.blue());
+//        telemetry.addData("Hue", hsvValues[0]);
 
 //        // BACK mode
 
@@ -108,8 +108,7 @@ public boolean intakeOnF = false;
         /**  set lights color  **/
         /** 2M Distance Sensor Code  */
 
-        telemetry.addData("Left range", String.format("%.01f mm", Cosmo.dis1.getDistance(DistanceUnit.MM)));
-        telemetry.addData("Right range", String.format("%.01f mm", Cosmo.dis2.getDistance(DistanceUnit.MM)));
+
 
 
 //        Color.RGBToHSV((int)(Cosmo.sensorColor.red() * 255), (int)(Cosmo.sensorColor.green() * 255), (int)(Cosmo.sensorColor.blue() * 255), hsvValues);

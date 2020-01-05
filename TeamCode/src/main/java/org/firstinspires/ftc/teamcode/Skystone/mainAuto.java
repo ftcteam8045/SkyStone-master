@@ -421,8 +421,6 @@ public class mainAuto extends LinearOpMode {
                 Cosmo.leftIntake.setPower(0.0);
                 Cosmo.rightIntake.setPower(0.0);
                 mecanumDrivetoTape(0.5, 15, -270, 0);  //drive until tape is detected
-                mecanumDrive(0.2, 2, -270, 0);  //drive until tape is detected
-
 
 
             }
