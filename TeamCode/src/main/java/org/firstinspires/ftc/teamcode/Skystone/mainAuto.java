@@ -56,6 +56,7 @@ public class mainAuto extends LinearOpMode {
     public boolean right = true;
     public double grayHueValue = 90.0;  // color sensor values
     public double redHueValue = 5;
+    public double s = 0.72727;
     public double blueHueValue = 189;
     public double grayRedBorder = (grayHueValue + redHueValue) / 2;
     public double grayBlueBorder = (grayHueValue + blueHueValue) / 2;
@@ -244,32 +245,32 @@ public class mainAuto extends LinearOpMode {
             if (skystonePosition) {            /** skystone zone drive  **/
 
                 /** scans for skystone first **/
-                mecanumDrive(0.4, -15, 0, 0); //drive forward
+                mecanumDrive(0.8, -13*s, 0, 0); //drive forward
                 grabSkystone();
                 Cosmo.clamp1.setPosition(0.51);
                 Cosmo.clamp2.setPosition(0.49);
                 mecanumTurn(1.0, -90); // turn right
-                mecanumDrive(1.0, 60, -90, 0); // drive forward
+                mecanumDrive(1.0, 60*s, -90, 0); // drive forward
                 mecanumTurn(1.0, -180); // turn right again
-                mecanumDrive(0.5, 4, -180, 0); //drive forward to foundation
-                mecanumDrive(0.4, 7.5, -170, 0); //drive forward to foundation slow
+                mecanumDrive(0.5, 4*s, -180, 0); //drive forward to foundation
+                mecanumDrive(0.4, 7.5*s, -170, 0); //drive forward to foundation slow
                 sleep(200);
                 Cosmo.clamp1.setPosition(0.37);
                 Cosmo.clamp2.setPosition(0.63);
                 sleep(200);
-                mecanumDrive(0.6, -21, -150, 20); //drive back from foundation
-                mecanumDrive(0.7, -8, -90, 0); //drive back from foundation
+                mecanumDrive(0.6, -21*s, -150, 20); //drive back from foundation
+                mecanumDrive(0.7, -8*s, -90, 0); //drive back from foundation
                 mecanumTurn(1.0, -90); // turn left
-                mecanumDrive(0.5, 5, -90, 90); //strafe over
+                mecanumDrive(0.5, 5*s, -90, 90); //strafe over
                 Cosmo.leftIntake.setPower(-0.4);                  /** place down block - reverse intake motors **/
                 Cosmo.rightIntake.setPower(-0.4);
-                mecanumDrive(0.6, 12, -90, 0); //place foundation
+                mecanumDrive(0.6, 12*s, -90, 0); //place foundation
                 Cosmo.clamp1.setPosition(0.51);
                 Cosmo.clamp2.setPosition(0.49);
                 Cosmo.leftIntake.setPower(0.0);   // turn off intake motors
                 Cosmo.rightIntake.setPower(0.0);
-                mecanumDrive(0.5, 12.5, -90, -90); //strafe over
-                mecanumDrivetoTape(0.5, -25, -90, 0);  //drive until tape is detected
+                mecanumDrive(0.5, 10.5*s, -90, -90); //strafe over
+                mecanumDrivetoTape(0.5, -25*s, -90, 0);  //drive until tape is detected
                 grabSkystoneAgain();
 
 
@@ -360,17 +361,25 @@ public class mainAuto extends LinearOpMode {
         } else { //TEAM IS BLUE
             if (left) {
                 mecanumTurn(1.0, -65); // turn right
-                mecanumDrive(0.7, -14, -75, 78);
+                mecanumDrive(0.7, -12*s, -75, 78);
                 Cosmo.leftIntake.setPower(0.8);
                 Cosmo.rightIntake.setPower(0.8);
-                mecanumDrive(0.35, -2.5, -85, 0);
+                mecanumDrive(0.35, -2.5*s, -85, 0);
                 Cosmo.leftIntake.setPower(0.0);
                 Cosmo.rightIntake.setPower(0.0);
-                mecanumDrive(0.8, 14, -80, 80);
+                mecanumDrive(0.8, 14.5*s, -80, 80);
             }
 
             if (center) {
-
+                mecanumDrive(0.7, -8*s, 0, -90);
+                mecanumTurn(1.0, -65); // turn right
+                mecanumDrive(0.7, -12*s, -75, 78);
+                Cosmo.leftIntake.setPower(0.8);
+                Cosmo.rightIntake.setPower(0.8);
+                mecanumDrive(0.35, -2.5*s, -85, 0);
+                Cosmo.leftIntake.setPower(0.0);
+                Cosmo.rightIntake.setPower(0.0);
+                mecanumDrive(0.8, 14.5*s, -80, 80);
 
             }
 
@@ -404,29 +413,47 @@ public class mainAuto extends LinearOpMode {
 
         } else { //TEAM IS BLUE
             if (left) {
-                mecanumDrive(0.5, -13.5, -90, 0); // drive back towards quarry
+                mecanumDrive(0.5, -41.5*s, -90, 0); // drive back towards quarry
                 mecanumTurn(1.0, -40);  // turn to face other skytone
                 Cosmo.leftIntake.setPower(0.8);
                 Cosmo.rightIntake.setPower(0.8);
-                mecanumDrive(0.3, -13.2, -40, 0); // drive back towards other skytone
+                mecanumDrive(0.3, -13.2*s, -40, 0); // drive back towards other skytone
                 Cosmo.leftIntake.setPower(0.0);
                 Cosmo.rightIntake.setPower(0.0);
-                mecanumDrive(0.3, 13.2, -40, 0); // back up
+                mecanumDrive(0.3, 13.2*s, -40, 0); // back up
                 mecanumTurn(1.0, -90);
-                mecanumDrive(1.0, 22, -90, 0);  //drive until tape is detected
+                mecanumDrive(1.0, 20*s, -90, 0);  //drive to drop block
                 mecanumTurn(1.0, -270);
                 Cosmo.leftIntake.setPower(-0.4);
                 Cosmo.rightIntake.setPower(-0.4);
-                mecanumDrive(0.3, 5, -270, 0);  //drive back while dropping block
+                mecanumDrive(0.3, 5*s, -270, 0);  //drive back while dropping block
                 Cosmo.leftIntake.setPower(0.0);
                 Cosmo.rightIntake.setPower(0.0);
-                mecanumDrivetoTape(0.5, 15, -270, 0);  //drive until tape is detected
+                mecanumDrivetoTape(0.5, 15*s, -270, 0);  //drive until tape is detected
 
 
             }
 
             if (center) {
-
+                mecanumDrive(0.5, -50.5*s, -90, 0); // drive back towards quarry
+                mecanumTurn(1.0, -40);  // turn to face other skytone
+                mecanumDrive(0.3, -8*s, -40, 0); // drive back towards other skytone
+                mecanumDrive(0.3, 7*s, -40, -90); // drive back towards other skytone
+                Cosmo.leftIntake.setPower(0.8);
+                Cosmo.rightIntake.setPower(0.8);
+                mecanumDrive(0.3, -4*s, -40, 0); // drive back towards other skytone
+                Cosmo.leftIntake.setPower(0.0);
+                Cosmo.rightIntake.setPower(0.0);
+                mecanumDrive(0.3, 12*s, -40, 0); // back up
+                mecanumTurn(1.0, -90);
+                mecanumDrive(1.0, 22*s, -90, 0);  //drive until tape is detected
+                mecanumTurn(1.0, 90);
+                Cosmo.leftIntake.setPower(-0.4);
+                Cosmo.rightIntake.setPower(-0.4);
+                mecanumDrive(0.3, 5*s, 90, 0);  //drive back while dropping block
+                Cosmo.leftIntake.setPower(0.0);
+                Cosmo.rightIntake.setPower(0.0);
+                mecanumDrivetoTape(0.5, 25*s, 90, 0);  //drive until tape is detected
 
             }
 
