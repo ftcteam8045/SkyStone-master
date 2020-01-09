@@ -15,7 +15,7 @@ import java.util.Date;
 
 
 @TeleOp(name="Vexmotor_Test", group="8045")  // @Autonomous(...) is the other common choice
-//@Disabled
+@Disabled
 public class vexmotor extends OpMode
 {
     /* Declare OpMode members. */

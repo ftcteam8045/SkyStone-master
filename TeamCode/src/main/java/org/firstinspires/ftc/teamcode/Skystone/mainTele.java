@@ -210,8 +210,8 @@ public boolean intakeOnF = false;
         if(intakeOnF) {
             if (Cosmo.leftIntake.getPower() == 0.0) {
 
-                Cosmo.leftIntake.setPower(0.8);
-                Cosmo.rightIntake.setPower(0.8);
+                Cosmo.leftIntake.setPower(1.0);
+                Cosmo.rightIntake.setPower(1.0);
                 intakeOnF = false;
                 goIntakeF = false;
 
