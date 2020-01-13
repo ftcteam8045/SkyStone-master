@@ -61,8 +61,9 @@ public class Hardware2019
     public DcMotor  rightIntake   = null;
     public Servo clamp1 = null;
     public Servo clamp2 = null;
-    public CRServo  vex1  = null;
-    public CRServo  vex2  = null;
+    public Servo clawTop = null;
+    public Servo clawMid = null;
+    public Servo clawBot = null;
 
 
 
@@ -112,6 +113,8 @@ public class Hardware2019
     public ColorSensor sensorColor;
     public DistanceSensor dis1;
     public DistanceSensor dis2;
+    public DistanceSensor sideSensor;
+
 
     /* Constructor */
     public Hardware2019(){
@@ -133,6 +136,9 @@ public class Hardware2019
 
         clamp1 = hwMap.get(Servo.class, "clamp_1");
         clamp2 = hwMap.get(Servo.class, "clamp_2");
+        clawTop = hwMap.get(Servo.class, "claw_top");
+        clawMid = hwMap.get(Servo.class, "claw_mid");
+        clawBot = hwMap.get(Servo.class, "claw_bot");
 
 
         // Define and Initialize Motors
@@ -142,8 +148,6 @@ public class Hardware2019
         rightRear = hwMap.get(DcMotor.class, "right_rear");
         leftIntake  = hwMap.get(DcMotor.class, "left_intake");
         rightIntake = hwMap.get(DcMotor.class, "right_intake");
-        vex1 = hwMap.get(CRServo.class, "vex_1");
-        //vex2 = hwMap.get(CRServo.class, "vex_2");
 
         // this should be for neverest  & using it for Matrix/yellowjackets as well.
          leftFront.setDirection(DcMotor.Direction.FORWARD);
@@ -230,6 +234,7 @@ public class Hardware2019
         sensorColor = hwMap.get(ColorSensor.class, "sensor_color");
         dis1 = hwMap.get(DistanceSensor.class, "dis_sensor1");
         dis2 = hwMap.get(DistanceSensor.class, "dis_sensor2");
+        sideSensor = hwMap.get(DistanceSensor.class, "side_sensor");
 
 
 
