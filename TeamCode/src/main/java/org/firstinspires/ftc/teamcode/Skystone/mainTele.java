@@ -154,10 +154,10 @@ public class mainTele extends OpMode {
 
 
         if(gamepad2.dpad_up) {
-            Cosmo.clawBot.setPosition(0.75);
-            Cosmo.clawMid.setPosition(0.78);
+            Cosmo.clawBot.setPosition(0.79);
+            Cosmo.clawMid.setPosition(0.85);
             sleep(200);
-            Cosmo.clawTop.setPosition(0.15);
+            Cosmo.clawTop.setPosition(0.25);
         }
 
         if(gamepad1.x) { //ready to clamp
@@ -166,16 +166,16 @@ public class mainTele extends OpMode {
             Cosmo.clawTop.setPosition(0.98);
         }
         if(gamepad1.a) { //clamp block
-            Cosmo.clawBot.setPosition(0.31);
+            Cosmo.clawBot.setPosition(0.275);
             sleep(200);
-            Cosmo.clawMid.setPosition(0.15);
+            Cosmo.clawTop.setPosition(0.59);
             sleep(100);
-            Cosmo.clawTop.setPosition(0.62);
+            Cosmo.clawMid.setPosition(0.205);
         }
         if(gamepad1.y) {  //lift block while clamping
-            Cosmo.clawBot.setPosition(0.74);
-            Cosmo.clawMid.setPosition(0.15);
-            Cosmo.clawTop.setPosition(0.62);
+            Cosmo.clawBot.setPosition(0.78);
+            Cosmo.clawMid.setPosition(0.205);
+            Cosmo.clawTop.setPosition(0.59);
 
         }
         if(gamepad1.b) { //drop block while lifted up
@@ -242,8 +242,8 @@ public class mainTele extends OpMode {
         if(intakeOnF) {
             if (Cosmo.leftIntake.getPower() == 0.0) {
 
-                Cosmo.leftIntake.setPower(1.0);
-                Cosmo.rightIntake.setPower(1.0);
+                Cosmo.leftIntake.setPower(0.8);
+                Cosmo.rightIntake.setPower(0.8);
                 intakeOnF = false;
                 goIntakeF = false;
 
