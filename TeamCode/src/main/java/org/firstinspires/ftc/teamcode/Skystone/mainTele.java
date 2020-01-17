@@ -153,7 +153,7 @@ public class mainTele extends OpMode {
         telemetry.addData("bot claw servo", Cosmo.clawBot.getPosition());
 
 
-        if(gamepad2.dpad_up) {
+        if(gamepad1.dpad_right) {
             Cosmo.clawBot.setPosition(0.79);
             Cosmo.clawMid.setPosition(0.85);
             sleep(200);

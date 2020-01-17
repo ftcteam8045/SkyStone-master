@@ -108,12 +108,10 @@ public class mainAuto extends LinearOpMode {
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Ready to run");    //
         telemetry.update();
-        // AutoTransitioner used before waitForStart()
-        // if (teamIsRed) {
-        //         AutoTransitioner.transitionOnStop(this, "mainTele");   // get ready for teleop at the end of auto
-        //  } else {
-        //     AutoTransitioner.transitionOnStop(this, "MainTeleBlue");   // get ready for teleop at the end of auto
-        // }
+
+        AutoTransitioner.transitionOnStop(this, "MainTele");   // get ready for teleop at the end of auto
+
+
         /**************************************************************
          // Actual Init  loop
          *************************************************************/
@@ -153,52 +151,70 @@ public class mainAuto extends LinearOpMode {
                     // step through the list of recognitions and display boundary info.
                     int i = 0;
                     for (Recognition recognition : updatedRecognitions) {
-                        telemetry.addData("", updatedRecognitions.size());
-                        telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                        telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                                recognition.getLeft(), recognition.getTop());
-                        telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                                recognition.getRight(), recognition.getBottom());
+//                        if (updatedRecognitions.) {
+//                            updatedRecognitions.remove("Stone");
+//                        }
+                            telemetry.addData("", updatedRecognitions.size());
+                            telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                            telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
+                                    recognition.getLeft(), recognition.getTop());
+                            telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
+                                    recognition.getRight(), recognition.getBottom());
 
-                        telemetry.addData("", recognition.getRight());
+                            telemetry.addData("", recognition.getRight());
 
-                        if (recognition.getLabel() == "Skystone" && recognition.getTop() > 480) {
+                            if (recognition.getLabel().equals("Skystone") && recognition.getTop() > 480) {
 
-                            if(!teamIsRed) { //BLUE SIDE AUTO DETECTION NUMBERS
-                                if (recognition.getLeft() < 300) {
-                                    left = true;
-                                    center = false;
-                                    right = false;
-                                } else if (recognition.getLeft() > 300) {
 
-                                    left = false;
-                                    center = true;
-                                    right = false;
+                                if (!teamIsRed) { //BLUE SIDE AUTO DETECTION NUMBERS
+                                    if (recognition.getLeft() < 300) {
+                                        left = true;
+                                        center = false;
+                                        right = false;
+                                    } else if (recognition.getLeft() > 300) {
+
+                                        left = false;
+                                        center = true;
+                                        right = false;
+
+                                    } else {
+
+                                        left = false;
+                                        center = false;
+                                        right = true;
+
+                                    }
+
+                                } else {   //RED SIDE AUTO DETECTION NUMBERS
+                                    if (recognition.getRight() < 350) {
+                                        left = true;
+                                        center = false;
+                                        right = false;
+                                    } else if (recognition.getRight() > 350) {
+
+                                        left = false;
+                                        center = true;
+                                        right = false;
+
+                                    }else {
+
+                                        left = false;
+                                        center = false;
+                                        right = true;
+
+                                    }
 
                                 }
+                            } else {
 
-                            } else {   //RED SIDE AUTO DETECTION NUMBERS
-                                if (recognition.getRight() < 350) {
-                                    left = true;
-                                    center = false;
-                                    right = false;
-                                } else if (recognition.getRight() > 350) {
-
-                                    left = false;
-                                    center = true;
-                                    right = false;
-
-                                }
+                                left = false;
+                                center = false;
+                                right = true;
 
                             }
-                        } else if (recognition.getLabel() != "Skystone"){
-                            left = false;
-                            center = false;
-                            right = true;
-
-                        }
 
                     }
+
 
                     telemetry.update();
                 }
@@ -235,6 +251,7 @@ public class mainAuto extends LinearOpMode {
 
             } else {             /** foundation zone drive  **/
 
+                mecanumDrivetoTape(0.6, 12 * s, 0, 0);
 
             }
         } else {     /** BLUE SIDE CODE **/
@@ -246,34 +263,41 @@ public class mainAuto extends LinearOpMode {
                 Cosmo.clamp2.setPosition(0.08);
                 mecanumDrive(0.6, -15*s, 0, 0); //drive forward
                 grabSkystone();
-                deliverBlock(-21.5, 1);
-                mecanumDrive(0.9, 10, 89, 0);
-                mecanumDrivetoTape(0.3,  15, 90, 0);
+                deliverBlock(-23, 1);
+                mecanumDrive(0.9, 12, 90, 0);
+                mecanumDrivetoTape(0.3,  10, 90, 0);
                 grabSkystoneAgain();
                 if(!right) {
-                    deliverBlock(-33.5, 1);
+                    deliverBlock(-33.85, 1);
                 } else  {
-                    mecanumDrive(0.9, -30 * s, 89, 0);
+                    mecanumDrive(0.9, 33.85 * s, -90, 0);
                 }
                 mecanumTurn(1.0, -180); // turn right again
-                mecanumDrivetoFoundation(0.5, 5*s, -180, -90, 26); //drive forward to foundation
+                mecanumDrive(0.8, 5*s, -180, -90); //strafe over
+                Cosmo.clamp1.setPosition(0.65);
+                Cosmo.clamp2.setPosition(0.35);
+                mecanumDrive(0.6, 2.3*s, -180, 0); //drive forward
+                mecanumDrive(0.25, 3*s, -180, 0); //drive forward
                 Cosmo.clamp1.setPosition(0.42);
                 Cosmo.clamp2.setPosition(0.65);
-                mecanumDrive(0.8, -15*s, -155, 30); //drive back from foundation
-                mecanumDrive(0.8, -13*s, -90, 0); //drive back from foundation
+                sleep(400);
+                mecanumDrive(0.8, -14.5*s, -155, 30); //drive back from foundation
+                mecanumDrive(0.9, -14*s, -90, 0); //drive back from foundation
                 if(right){
                     Cosmo.leftIntake.setPower(-0.4);
                     Cosmo.rightIntake.setPower(-0.4);
                 }
-                mecanumDrive(0.5, 15*s, -90, 0); //place foundation
+                Cosmo.clamp1.setPosition(0.99);
+                Cosmo.clamp2.setPosition(0.08);
+                mecanumDrive(0.6, 12*s, -90, 0); //place foundation
                 if(right){
                     Cosmo.leftIntake.setPower(0.0);
                     Cosmo.rightIntake.setPower(0.0);
                 }
                 Cosmo.clamp1.setPosition(0.99);
                 Cosmo.clamp2.setPosition(0.08);
-                mecanumDrive(0.8, 10*s, -90, -90); //strafe over
-                mecanumDrive(1.0, -26*s, -91, 0);  //drive until tape is detected
+                mecanumDrive(0.8, 9.5*s, -90, -90); //strafe over
+                mecanumDrive(1.0, -28*s, -91, 0);  //drive until tape is detected
 
 
             } else {             /** foundation zone drive  **/
@@ -370,11 +394,11 @@ public class mainAuto extends LinearOpMode {
             if (center) {
                 mecanumTurn(1.0, 90); // turn right
                 readyToGrab();
-                mecanumDrive(0.75, 13.8 * s, 90, 0);
+                mecanumDrive(0.75, 15.8 * s, 90, 0);
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
                 grabBlockWithClaw();
                 mecanumDrive(0.8, 8 * s, 90, -90);
-                mecanumDrive(0.9, -36 * s, 89, 0);
+                mecanumDrive(0.9, -38.5 * s, 90, 0);
                 mecanumDrivetoTape(0.3, -10 * s, 90, 0);
 
             }
@@ -382,12 +406,12 @@ public class mainAuto extends LinearOpMode {
             if (right) {
                 mecanumTurn(1.0, 90); // turn right
                 readyToGrab();
-                mecanumDrive(0.75, 5 * s, 90, 0);
-                mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
+                mecanumDrive(0.75, 5.1 * s, 90, 0);
+                mecanumDrivetoObject(0.4, -10 * s, 90, -90, 124);
                 grabBlockWithClaw();
                 mecanumDrive(0.8, 8 * s, 90, -90);
-                mecanumDrive(0.9, -35 * s, 89, 0);
-                mecanumDrivetoTape(0.3, -10 * s, 90, 0);
+                mecanumDrive(0.9, -38 * s, 89, 0);
+                mecanumDrivetoTape(0.3, -6 * s, 90, 0);
 
             }
         }
@@ -425,7 +449,7 @@ public class mainAuto extends LinearOpMode {
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
                 grabBlockWithClaw();
                 mecanumDrive(0.8, 8 * s, 90, -90);
-                mecanumDrivetoTape(0.9, -18 * s, 90, 0);
+                mecanumDrive(0.9, -22 * s, 90, 0);
                 mecanumDrivetoTape(0.3, -10 * s, 90, 0);
 
 
@@ -433,7 +457,7 @@ public class mainAuto extends LinearOpMode {
 
             if (center) {
                 Cosmo.clawMid.setPosition(0.0);
-                mecanumDrive(0.8, 26.4 * s, 90, 0);
+                mecanumDrive(0.8, 28.5 * s, 90, 0);
                 Cosmo.clawTop.setPosition(0.98);  //ready to clamp
                 sleep(200);
                 Cosmo.clawBot.setPosition(0.36);
@@ -441,22 +465,23 @@ public class mainAuto extends LinearOpMode {
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
                 grabBlockWithClaw();
                 mecanumDrive(0.8, 8 * s, 90, -90);
-                mecanumDrivetoTape(0.9, -20 * s, 90, 0);
+                mecanumDrive(0.9, -24 * s, 90, 0);
                 mecanumDrivetoTape(0.3, -8 * s, 90, 0);
             }
 
             if (right) {
                 mecanumDrive(0.8, 30 * s, 90, 0);
-                mecanumTurn(1.0, -65); // turn right
-                mecanumDrive(0.7, -18*s, -75, 78);
+                mecanumTurn(1.0, -88); // turn right
+                mecanumDrive(0.8, -2.9 * s, -90, 0);
+                mecanumDrive(0.7, -15.2*s, -90, 90);
                 Cosmo.leftIntake.setPower(0.8);
                 Cosmo.rightIntake.setPower(0.8);
-                mecanumDrive(0.35, -2.5*s, -85, 0);
+                mecanumDrive(0.35, -3.5*s, -90, 0);
                 Cosmo.leftIntake.setPower(0.0);
                 Cosmo.rightIntake.setPower(0.0);
-                mecanumDrive(0.35, 2.5*s, -85, 0);
-                mecanumDrive(0.7, 13*s, -75, 78);
-                mecanumDrivetoTape(0.9, 26 * s, -90, 0);
+                mecanumDrive(0.45, 4.3*s, -90, 0);
+                mecanumDrive(0.7, 16*s, -90, 90);
+                mecanumDrive(0.9, 22.5 * s, -90, 0);
                 mecanumDrivetoTape(0.3, 8 * s, -90, 0);
             }
         }
@@ -478,7 +503,7 @@ public class mainAuto extends LinearOpMode {
         mecanumDrive(0.45, 0.3 * s, 90, -90);
         mecanumDrive(0.45, -0.3 * s, 90, -90);
         Cosmo.clawTop.setPosition(0.58);
-        sleep(200);
+        sleep(300);
         Cosmo.clawMid.setPosition(0.205); //clamp block
         sleep(200);
         Cosmo.clawBot.setPosition(0.78);
@@ -489,8 +514,10 @@ public class mainAuto extends LinearOpMode {
     }
 
     public void deliverBlock(double distanceFromTape, int layer){
+
+
         mecanumDrive(0.9, distanceFromTape * s, 89, 0);
-        mecanumDrivetoObject(0.45, -8 * s, 90, -90, 130);
+        mecanumDrivetoObject(0.45, -8 * s, 90, -90, 124);
         if(layer == 1) {
             Cosmo.clawBot.setPosition(0.4);
             sleep(200);
@@ -796,90 +823,6 @@ public class mainAuto extends LinearOpMode {
     }
 
 
-    public void mecanumDrivetoFoundation(double speed, double distance, double robot_orientation, double drive_direction, double distanceToObject) {
-        double max;
-        double multiplier;
-        int right_start;
-        int left_start;
-        int moveCounts;
-        //int drive_direction = -90;
-        moveCounts = (int) (distance * Cosmo.COUNTS_PER_INCH);
-        right_start = Cosmo.rightRear.getCurrentPosition();
-        left_start = Cosmo.leftRear.getCurrentPosition();
-        double lfpower;
-        double lrpower;
-        double rfpower;
-        double rrpower;
-
-        double lfbase;
-        double lrbase;
-        double rfbase;
-        double rrbase;
-        lfbase = signum(distance) * Math.cos(Math.toRadians(drive_direction + 45));
-        lrbase = signum(distance) * Math.sin(Math.toRadians(drive_direction + 45));
-        rfbase = signum(distance) * Math.sin(Math.toRadians(drive_direction + 45));
-        rrbase = signum(distance) * Math.cos(Math.toRadians(drive_direction + 45));
-        /** this is the main test to see if you've gone far enough,  add the color tape in here!
-         *  so you need a || (hue is less than so much || hue is > so much)
-         *
-         *  could also say  'while it's not withing a little bit of the gray reading'
-         *
-         * **/
-
-        while (((abs(Cosmo.rightRear.getCurrentPosition() - right_start) + abs(Cosmo.leftRear.getCurrentPosition() - left_start)) / 2 < abs(moveCounts))
-                && opModeIsActive() &&    // opmode has to be active
-                (Cosmo.dis1.getDistance(DistanceUnit.MM)> distanceToObject) && (Cosmo.dis2.getDistance(DistanceUnit.MM)> distanceToObject)) {         //  stop if close enough to foundation
-            //Determine correction
-            double correction = robot_orientation - getheading();
-            if (correction <= -180) {
-                correction += 360;
-            } else if (correction >= 180) {                      // correction should be +/- 180 (to the left negative, right positive)
-                correction -= 360;
-            }
-            lrpower = lrbase; //MIGHT BE MORE EFFECIENT TO COMBINE THESE WITHT HE ADJUSTMENT PART AND SET ADJUSTMENT TO ZERO IF NOT NEEDED
-            lfpower = lfbase;
-            rrpower = rrbase;
-            rfpower = rfbase;
-            if (abs(correction) > drive_THRESHOLD) {//If you are off
-                //Apply power to one side of the robot to turn the robot back to the right heading
-                double right_adjustment = Range.clip((drive_COEF * correction / 45), -1, 1);
-                lrpower -= right_adjustment;
-                lfpower -= right_adjustment;
-                rrpower = rrbase + right_adjustment;
-                rfpower = rfbase + right_adjustment;
-
-            }//Otherwise you Are at the right orientation
-
-            //Determine largest power being applied in either direction
-            max = abs(lfpower);
-            if (abs(lrpower) > max) max = abs(lrpower);
-            if (abs(rfpower) > max) max = abs(rfpower);
-            if (abs(rrpower) > max) max = abs(rrpower);
-
-            multiplier = speed / max; //multiplier to adjust speeds of each wheel so you can have a max power of 1 on atleast 1 wheel
-
-            lfpower *= multiplier;
-            lrpower *= multiplier;
-            rfpower *= multiplier;
-            rrpower *= multiplier;
-
-            Cosmo.leftFront.setPower(lfpower);
-            Cosmo.leftRear.setPower(lrpower);
-            Cosmo.rightFront.setPower(rfpower);
-            Cosmo.rightRear.setPower(rrpower);
-
-
-            telemetry.addData("side sensor", String.format("%.01f mm", Cosmo.sideSensor.getDistance(DistanceUnit.MM)));
-            telemetry.update();
-
-
-        }
-        //gromit.driveTrain.stopMotors();
-        Cosmo.leftFront.setPower(0.0);
-        Cosmo.rightFront.setPower(0.0);
-        Cosmo.rightRear.setPower(0.0);
-        Cosmo.leftRear.setPower(0.0);
-    }
 
     public float getheading() {
         // Acquiring the angles is relatively expensive; we don't want
