@@ -275,40 +275,40 @@ public class mainAuto extends LinearOpMode {
                 mecanumDrive(0.6, -15*s, 0, 0); //drive forward
                 grabSkystone();
                 deliverBlock(28, 1);
-                mecanumDrive(0.9, -16.5, 90, 0);
+                mecanumDrive(0.9, -17, 90, 0);
                 mecanumDrivetoTape(0.3,  -10, 90, 0);
                 grabSkystoneAgain();
-                if(!right) {
-                    deliverBlock(-33.85, 1);
+                if(!left) {
+                    deliverBlock(36, 1);
                 } else  {
-                    mecanumDrive(0.9, 33.85 * s, -90, 0);
+                    mecanumDrive(0.9, 33.85 * s, 90, 0);
                 }
-//                mecanumTurn(1.0, -180); // turn right again
-//                mecanumDrive(0.8, 5*s, -180, -90); //strafe over
-//                Cosmo.clamp1.setPosition(0.65);
-//                Cosmo.clamp2.setPosition(0.35);
-//                mecanumDrive(0.6, 2*s, -180, 0); //drive forward
-//                mecanumDrive(0.25, 2.5*s, -180, 0); //drive forward
-//                Cosmo.clamp1.setPosition(0.42);
-//                Cosmo.clamp2.setPosition(0.65);
-//                sleep(400);
-//                mecanumDrive(0.8, -14.5*s, -155, 30); //drive back from foundation
-//                mecanumDrive(0.9, -14*s, -90, 0); //drive back from foundation
-//                if(right){
-//                    Cosmo.leftIntake.setPower(-0.4);
-//                    Cosmo.rightIntake.setPower(-0.4);
-//                }
-//                Cosmo.clamp1.setPosition(0.99);
-//                Cosmo.clamp2.setPosition(0.08);
-//                mecanumDrive(0.6, 12*s, -90, 0); //place foundation
-//                if(right){
-//                    Cosmo.leftIntake.setPower(0.0);
-//                    Cosmo.rightIntake.setPower(0.0);
-//                }
-//                Cosmo.clamp1.setPosition(0.99);
-//                Cosmo.clamp2.setPosition(0.08);
-//                mecanumDrive(0.8, 9*s, -90, -90); //strafe over
-//                mecanumDrive(1.0, -29*s, -91, 0);  //drive until tape is detected
+                mecanumTurn(1.0, -180); // turn right again
+                mecanumDrive(0.8, 5*s, -180, -90); //strafe over
+                Cosmo.clamp1.setPosition(0.65);
+                Cosmo.clamp2.setPosition(0.35);
+                mecanumDrive(0.6, 2*s, -180, 0); //drive forward
+                mecanumDrive(0.25, 2.5*s, -180, 0); //drive forward
+                Cosmo.clamp1.setPosition(0.42);
+                Cosmo.clamp2.setPosition(0.65);
+                sleep(400);
+                mecanumDrive(0.8, -14.5*s, -155, 30); //drive back from foundation
+                mecanumDrive(0.9, -14*s, -90, 0); //drive back from foundation
+                if(left){
+                    Cosmo.leftIntake.setPower(-0.4);
+                    Cosmo.rightIntake.setPower(-0.4);
+                }
+                Cosmo.clamp1.setPosition(0.99);
+                Cosmo.clamp2.setPosition(0.08);
+                mecanumDrive(0.6, 12*s, -90, 0); //place foundation
+                if(left){
+                    Cosmo.leftIntake.setPower(0.0);
+                    Cosmo.rightIntake.setPower(0.0);
+                }
+                Cosmo.clamp1.setPosition(0.99);
+                Cosmo.clamp2.setPosition(0.08);
+                mecanumDrive(0.8, 9*s, -90, -90); //strafe over
+                mecanumDrive(1.0, -29*s, -91, 0);  //drive until tape is detected
 
 
             } else {             /** foundation zone drive  **/
@@ -409,7 +409,7 @@ public class mainAuto extends LinearOpMode {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minimumConfidence = 0.35;
+        tfodParameters.minimumConfidence = 0.30;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }
@@ -454,7 +454,7 @@ public class mainAuto extends LinearOpMode {
             if (right) {
                 mecanumTurn(1.0, 90); // turn right
                 readyToGrab();
-                mecanumDrive(0.75, -7.2 * s, 90, 0);
+                mecanumDrive(0.75, -7 * s, 90, 0);
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
                 grabBlockWithClaw();
                 mecanumDrive(0.8, 8 * s, 90, -90);
@@ -528,7 +528,7 @@ public class mainAuto extends LinearOpMode {
 
             if (right) {
                 Cosmo.clawMid.setPosition(0.0);
-                mecanumDrive(0.8, -13 * s, 90, 0);
+                mecanumDrive(0.8, -13.4 * s, 90, 0);
                 Cosmo.clawTop.setPosition(0.98);  //ready to clamp
                 sleep(200);
                 Cosmo.clawBot.setPosition(0.36);
