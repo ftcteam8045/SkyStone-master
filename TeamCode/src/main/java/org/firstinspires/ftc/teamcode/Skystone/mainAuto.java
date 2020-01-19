@@ -38,7 +38,6 @@ import static org.firstinspires.ftc.teamcode.oldcode.DriveTrain.turn_MIN_SPEED;
 public class mainAuto extends LinearOpMode {
 
     /* Declare OpMode members. */
-//    Hardware8045testbot Cosmo = new Hardware8045testbot();   // Use a Pushbot's hardware
     Hardware2019 Cosmo = new Hardware2019();   // Use a Pushbot's hardware
 
     /**
@@ -275,7 +274,7 @@ public class mainAuto extends LinearOpMode {
                 mecanumDrive(0.6, -15*s, 0, 0); //drive forward
                 grabSkystone();
                 deliverBlock(29, 1);
-                mecanumDrive(0.9, -17, 90, 0);
+                mecanumDrive(0.9, -18, 90, 0);
                 mecanumDrivetoTape(0.3,  -10, 90, 0);
                 grabSkystoneAgain();
                 if(!left) {
@@ -528,7 +527,7 @@ public class mainAuto extends LinearOpMode {
 
             if (right) {
                 Cosmo.clawMid.setPosition(0.0);
-                mecanumDrive(0.8, -12 * s, 90, 0);
+                mecanumDrive(0.8, -11.3 * s, 90, 0);
                 Cosmo.clawTop.setPosition(0.98);  //ready to clamp
                 sleep(200);
                 Cosmo.clawBot.setPosition(0.36);
