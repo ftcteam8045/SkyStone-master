@@ -274,17 +274,17 @@ public class mainAuto extends LinearOpMode {
                 Cosmo.clamp2.setPosition(0.08);
                 mecanumDrive(0.6, -15*s, 0, 0); //drive forward
                 grabSkystone();
-                deliverBlock(28, 1);
+                deliverBlock(29, 1);
                 mecanumDrive(0.9, -17, 90, 0);
                 mecanumDrivetoTape(0.3,  -10, 90, 0);
                 grabSkystoneAgain();
                 if(!left) {
-                    deliverBlock(36, 1);
+                    deliverBlock(43, 1);
                 } else  {
                     mecanumDrive(0.9, 33.85 * s, 90, 0);
                 }
                 mecanumTurn(1.0, -180); // turn right again
-                mecanumDrive(0.8, 5*s, -180, -90); //strafe over
+                mecanumDrive(0.8, -6*s, -180, -90); //strafe over
                 Cosmo.clamp1.setPosition(0.65);
                 Cosmo.clamp2.setPosition(0.35);
                 mecanumDrive(0.6, 2*s, -180, 0); //drive forward
@@ -292,7 +292,7 @@ public class mainAuto extends LinearOpMode {
                 Cosmo.clamp1.setPosition(0.42);
                 Cosmo.clamp2.setPosition(0.65);
                 sleep(400);
-                mecanumDrive(0.8, -14.5*s, -155, 30); //drive back from foundation
+                mecanumDrive(0.8, -14.5*s, -205, 30); //drive back from foundation
                 mecanumDrive(0.9, -14*s, -90, 0); //drive back from foundation
                 if(left){
                     Cosmo.leftIntake.setPower(-0.4);
@@ -307,8 +307,8 @@ public class mainAuto extends LinearOpMode {
                 }
                 Cosmo.clamp1.setPosition(0.99);
                 Cosmo.clamp2.setPosition(0.08);
-                mecanumDrive(0.8, 9*s, -90, -90); //strafe over
-                mecanumDrive(1.0, -29*s, -91, 0);  //drive until tape is detected
+                mecanumDrive(0.8, 9*s, -90, 90); //strafe over
+                mecanumDrive(1.0, -29*s, -89, 0);  //drive until tape is detected
 
 
             } else {             /** foundation zone drive  **/
@@ -528,7 +528,7 @@ public class mainAuto extends LinearOpMode {
 
             if (right) {
                 Cosmo.clawMid.setPosition(0.0);
-                mecanumDrive(0.8, -13.4 * s, 90, 0);
+                mecanumDrive(0.8, -12 * s, 90, 0);
                 Cosmo.clawTop.setPosition(0.98);  //ready to clamp
                 sleep(200);
                 Cosmo.clawBot.setPosition(0.36);
@@ -536,7 +536,7 @@ public class mainAuto extends LinearOpMode {
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
                 grabBlockWithClaw();
                 mecanumDrive(0.8, 8 * s, 90, -90);
-                mecanumDrive(0.9, 12 * s, 90, 0);
+                mecanumDrive(0.9, 10 * s, 90, 0);
                 mecanumDrivetoTape(0.3, 10 * s, 90, 0);
 
             }
@@ -618,8 +618,12 @@ public class mainAuto extends LinearOpMode {
 
     public void deliverBlock(double distanceFromTape, int layer){
 
+        if(teamIsRed){
+            mecanumDrive(0.9, distanceFromTape * s, 91, 0);
 
-        mecanumDrive(0.9, distanceFromTape * s, 89, 0);
+        }else {
+            mecanumDrive(0.9, distanceFromTape * s, 89, 0);
+        }
         mecanumDrivetoObject(0.45, -8 * s, 90, -90, 124);
         if(layer == 1) {
             Cosmo.clawBot.setPosition(0.4);

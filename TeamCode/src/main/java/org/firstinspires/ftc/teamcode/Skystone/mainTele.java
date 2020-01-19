@@ -145,13 +145,6 @@ public class mainTele extends OpMode {
         drivesmart(-gamepad1.right_stick_x, -gamepad1.right_stick_y, gamepad1.left_stick_x);
 
 
-        telemetry.addData("side sensor", String.format("%.01f mm", Cosmo.sideSensor.getDistance(DistanceUnit.MM)));
-        telemetry.addData("left sensor", String.format("%.01f mm", Cosmo.dis1.getDistance(DistanceUnit.MM)));
-        telemetry.addData("right sensor", String.format("%.01f mm", Cosmo.dis1.getDistance(DistanceUnit.MM)));
-        telemetry.addData("top claw servo", Cosmo.clawTop.getPosition());
-        telemetry.addData("mid claw servo", Cosmo.clawMid.getPosition());
-        telemetry.addData("bot claw servo", Cosmo.clawBot.getPosition());
-
 
         if(gamepad1.dpad_right) {
             Cosmo.clawBot.setPosition(0.79);
