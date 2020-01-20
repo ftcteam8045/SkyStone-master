@@ -58,6 +58,7 @@ public class mainAuto extends LinearOpMode {
     public double grayHueValue = 90.0;  // color sensor values
     public double redHueValue = 5;
     public double s = 0.72727;
+    public double extraDistance = 0;
     public double blueHueValue = 189;
     public double grayRedBorder = (grayHueValue + redHueValue) / 2;
     public double grayBlueBorder = (grayHueValue + blueHueValue) / 2;
@@ -190,6 +191,7 @@ public class mainAuto extends LinearOpMode {
                             }
 
 
+
                         }
                     }
 
@@ -225,13 +227,19 @@ public class mainAuto extends LinearOpMode {
                             }
 
 
-
-                            if (!hasSeenStone) {
+                            if((recognition.getLabel().equals("Stone")) && recognition.getLeft() < 30 && recognition.getRight() > 600){
+                                left = false;  //no skystone visible
+                                center = false;
+                                right = true;
+                            } else if (!hasSeenStone) {
                                 left = true; //no skystone visible
                                 center = false;
                                 right = false;
 
                             }
+
+
+
 
 
                         }
@@ -273,18 +281,18 @@ public class mainAuto extends LinearOpMode {
                 Cosmo.clamp2.setPosition(0.08);
                 mecanumDrive(0.6, -15*s, 0, 0); //drive forward
                 grabSkystone();
-                deliverBlock(29, 1);
-                mecanumDrive(0.9, -18, 90, 0);
+                deliverBlock(30 + extraDistance, 1);
+                mecanumDrive(0.9, -18.8, 90, 0);
                 mecanumDrivetoTape(0.3,  -10, 90, 0);
                 grabSkystoneAgain();
                 if(!left) {
-                    deliverBlock(42.6, 1);
+                    deliverBlock(42.6 + extraDistance, 1);
                 } else  {
-                    mecanumDrive(0.9, 34 * s, 90, 0);
+                    mecanumDrive(0.9, (34 + extraDistance) * s , 90, 0);
                 }
                 mecanumTurn(1.0, 180); // turn right again
                 if(!left) {
-                    mecanumDrive(0.8, -8 * s, 180, -90); //strafe over
+                    mecanumDrive(0.8, -9.5 * s, 180, -90); //strafe over
                 }Cosmo.clamp1.setPosition(0.65);
                 Cosmo.clamp2.setPosition(0.35);
                 if(!left) {
@@ -296,8 +304,8 @@ public class mainAuto extends LinearOpMode {
                 Cosmo.clamp1.setPosition(0.42);
                 Cosmo.clamp2.setPosition(0.65);
                 sleep(400);
-                mecanumDrive(0.8, -16*s, 165, 30); //drive back from foundation
-                mecanumDrive(0.9, -14*s, 90, 0); //drive back from foundation
+                mecanumDrive(0.8, -14.5*s, 155, -30); //drive back from foundation
+                mecanumDrive(0.8, -14*s, 90, 0); //drive back from foundation
                 if(left){
                     Cosmo.leftIntake.setPower(-0.4);
                     Cosmo.rightIntake.setPower(-0.4);
@@ -312,7 +320,7 @@ public class mainAuto extends LinearOpMode {
                 Cosmo.clamp1.setPosition(0.99);
                 Cosmo.clamp2.setPosition(0.08);
                 mecanumDrive(0.8, 11*s, 90, 90); //strafe over
-                mecanumDrive(1.0, -29*s, 91, 0);  //drive until tape is detected
+                mecanumDrive(0.7, (-30+ extraDistance) *s , 91, 0);  //drive until tape is detected
 
 
             } else {             /** foundation zone drive  **/
@@ -331,14 +339,14 @@ public class mainAuto extends LinearOpMode {
                 Cosmo.clamp2.setPosition(0.08);
                 mecanumDrive(0.6, -15*s, 0, 0); //drive forward
                 grabSkystone();
-                deliverBlock(-23, 1);
+                deliverBlock(-23 + extraDistance, 1);
                 mecanumDrive(0.9, 12.6, 90, 0);
                 mecanumDrivetoTape(0.3,  10, 90, 0);
                 grabSkystoneAgain();
                 if(!right) {
-                    deliverBlock(-33.85, 1);
+                    deliverBlock(-33.85 + extraDistance, 1);
                 } else  {
-                    mecanumDrive(0.9, 34 * s, -90, 0);
+                    mecanumDrive(0.9, (34  + extraDistance) * s, -90, 0);
                 }
                 mecanumTurn(1.0, -180); // turn right again
                 mecanumDrive(0.8, 5*s, -180, -90); //strafe over
@@ -365,7 +373,7 @@ public class mainAuto extends LinearOpMode {
                 Cosmo.clamp1.setPosition(0.99);
                 Cosmo.clamp2.setPosition(0.08);
                 mecanumDrive(0.8, 9*s, -90, -90); //strafe over
-                mecanumDrive(1.0, -29*s, -91, 0);  //drive until tape is detected
+                mecanumDrive(1.0, (-29 + extraDistance) *s, -91, 0);  //drive until tape is detected
 
 
             } else {             /** foundation zone drive  **/
@@ -413,7 +421,7 @@ public class mainAuto extends LinearOpMode {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minimumConfidence = 0.30;
+        tfodParameters.minimumConfidence = 0.25;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }
@@ -438,9 +446,10 @@ public class mainAuto extends LinearOpMode {
                 mecanumDrive(0.75, -1.70 * s, 90, 0);
                 mecanumDrivetoObject(0.4, -9 * s, 90, -90, 124);
                 grabBlockWithClaw();
-                mecanumDrive(0.8, 8 * s, 90, -90);
-                mecanumDrive(0.9, 19.6 * s, 90, 0);
-                mecanumDrivetoTape(0.3, 6 * s, 90, 0);
+                mecanumDrive(0.8, 8.6
+                        * s, 90, -90);
+                mecanumDrive(0.9, 18 * s, 89, 0);
+                mecanumDrivetoTape(0.3, 10 * s, 90, 0);
 
             }
 
@@ -451,7 +460,7 @@ public class mainAuto extends LinearOpMode {
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
                 grabBlockWithClaw();
                 mecanumDrive(0.8, 8 * s, 90, -90);
-                mecanumDrive(0.9, 32.6 * s, 91, 0);
+                mecanumDrive(0.9, 32.1 * s, 89, 0);
                 mecanumDrivetoTape(0.3, 12 * s, 90, 0);
             }
 
@@ -462,7 +471,7 @@ public class mainAuto extends LinearOpMode {
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
                 grabBlockWithClaw();
                 mecanumDrive(0.8, 8 * s, 90, -90);
-                mecanumDrive(0.9, 28 * s, 91, 0);
+                mecanumDrive(0.9, 27.5 * s, 89, 0);
                 mecanumDrivetoTape(0.3, 12 * s, 90, 0);
 
             }
@@ -475,8 +484,8 @@ public class mainAuto extends LinearOpMode {
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
                 grabBlockWithClaw();
                 mecanumDrive(0.8, 8 * s, 90, -90);
-                mecanumDrive(0.9, -37 * s, 89, 0);
-                mecanumDrivetoTape(0.3, -12 * s, 90, 0);
+                mecanumDrive(0.9, -36.5 * s, 89, 0);
+                mecanumDrivetoTape(0.3, -14 * s, 90, 0);
             }
 
             if (center) {
@@ -486,8 +495,8 @@ public class mainAuto extends LinearOpMode {
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
                 grabBlockWithClaw();
                 mecanumDrive(0.8, 8 * s, 90, -90);
-                mecanumDrive(0.9, -40 * s, 90, 0);
-                mecanumDrivetoTape(0.3, -12 * s, 90, 0);
+                mecanumDrive(0.9, -39.5 * s, 90, 0);
+                mecanumDrivetoTape(0.3, -14 * s, 90, 0);
 
             }
 
@@ -498,8 +507,8 @@ public class mainAuto extends LinearOpMode {
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 124);
                 grabBlockWithClaw();
                 mecanumDrive(0.8, 8 * s, 90, -90);
-                mecanumDrive(0.9, -38 * s, 89, 0);
-                mecanumDrivetoTape(0.3, -6 * s, 90, 0);
+                mecanumDrive(0.9, -37.5 * s, 89, 0);
+                mecanumDrivetoTape(0.3, -10 * s, 90, 0);
 
             }
         }
@@ -512,24 +521,24 @@ public class mainAuto extends LinearOpMode {
 
         if (teamIsRed) {  //TEAM IS RED
             if (left) {
-                mecanumDrive(0.8, -26.58 * s, 90, 0);
+                mecanumDrive(0.8, -25 * s, 90, 0);
                 mecanumDrive(0.7, 18*s, 90, 90);
                 sleep(200);
                 Cosmo.leftIntake.setPower(0.8);
                 Cosmo.rightIntake.setPower(0.8);
-                mecanumDrive(0.35, -3.8*s, 90, 0);
+                mecanumDrive(0.35, -4.6*s, 90, 0);
                 Cosmo.leftIntake.setPower(0.0);
                 Cosmo.rightIntake.setPower(0.0);
-                mecanumDrive(0.45, 4.3*s, 90, 0);
+                mecanumDrive(0.45, 4.9*s, 90, 0);
                 mecanumDrive(0.7, -16.7*s, 90, 90);
                 mecanumDrive(0.9, 22 * s, 90, 0);
-                mecanumDrivetoTape(0.3, 8 * s, 90, 0);
+                mecanumDrivetoTape(0.3, 12 * s, 90, 0);
 
             }
 
             if (center) {
                 Cosmo.clawMid.setPosition(0.0);
-                mecanumDrive(0.8, -16.3 * s, 90, 0);
+                mecanumDrive(0.8, -15.8 * s, 90, 0);
                 Cosmo.clawTop.setPosition(0.98);  //ready to clamp
                 sleep(200);
                 Cosmo.clawBot.setPosition(0.36);
@@ -537,13 +546,13 @@ public class mainAuto extends LinearOpMode {
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
                 grabBlockWithClaw();
                 mecanumDrive(0.8, 8 * s, 90, -90);
-                mecanumDrive(0.9, 16.8 * s, 89, 0);
-                mecanumDrivetoTape(0.3, 10 * s, 90, 0);
+                mecanumDrive(0.9, 16.9 * s, 89, 0);
+                mecanumDrivetoTape(0.3, 15 * s, 90, 0);
             }
 
             if (right) {
                 Cosmo.clawMid.setPosition(0.0);
-                mecanumDrive(0.8, -11 * s, 90, 0);
+                mecanumDrive(0.8, -10.5 * s, 90, 0);
                 Cosmo.clawTop.setPosition(0.98);  //ready to clamp
                 sleep(200);
                 Cosmo.clawBot.setPosition(0.36);
@@ -559,7 +568,7 @@ public class mainAuto extends LinearOpMode {
         } else { //TEAM IS BLUE
             if (left) {
                 Cosmo.clawMid.setPosition(0.0);
-                mecanumDrive(0.8, 21.8 * s, 90, 0);
+                mecanumDrive(0.8, 21.3 * s, 90, 0);
                 Cosmo.clawTop.setPosition(0.98);  //ready to clamp
                 sleep(200);
                 Cosmo.clawBot.setPosition(0.36);
@@ -567,7 +576,7 @@ public class mainAuto extends LinearOpMode {
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
                 grabBlockWithClaw();
                 mecanumDrive(0.8, 8 * s, 90, -90);
-                mecanumDrive(0.9, -22 * s, 90, 0);
+                mecanumDrive(0.9, -21.8 * s, 90, 0);
                 mecanumDrivetoTape(0.3, -10 * s, 90, 0);
 
 
@@ -575,7 +584,7 @@ public class mainAuto extends LinearOpMode {
 
             if (center) {
                 Cosmo.clawMid.setPosition(0.0);
-                mecanumDrive(0.8, 29 * s, 90, 0);
+                mecanumDrive(0.8, 28.2 * s, 90, 0);
                 Cosmo.clawTop.setPosition(0.98);  //ready to clamp
                 sleep(200);
                 Cosmo.clawBot.setPosition(0.36);
@@ -584,11 +593,11 @@ public class mainAuto extends LinearOpMode {
                 grabBlockWithClaw();
                 mecanumDrive(0.8, 8 * s, 90, -90);
                 mecanumDrive(0.9, -24 * s, 90, 0);
-                mecanumDrivetoTape(0.3, -8 * s, 90, 0);
+                mecanumDrivetoTape(0.3, -12 * s, 90, 0);
             }
 
             if (right) {
-                mecanumDrive(0.8, 30 * s, 90, 0);
+                mecanumDrive(0.8, 28.9 * s, 90, 0);
                 mecanumTurn(1.0, -88); // turn right
                 mecanumDrive(0.8, -3.15 * s, -90, 0);
                 mecanumDrive(0.7, -15.2*s, -90, 90);
@@ -600,7 +609,7 @@ public class mainAuto extends LinearOpMode {
                 mecanumDrive(0.45, 4.3*s, -90, 0);
                 mecanumDrive(0.7, 16*s, -90, 90);
                 mecanumDrive(0.9, 22.5 * s, -90, 0);
-                mecanumDrivetoTape(0.3, 8 * s, -90, 0);
+                mecanumDrivetoTape(0.3, 12 * s, -90, 0);
             }
         }
 
