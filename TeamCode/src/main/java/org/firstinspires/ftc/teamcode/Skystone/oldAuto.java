@@ -33,9 +33,9 @@ import static org.firstinspires.ftc.teamcode.oldcode.DriveTrain.turn_MIN_SPEED;
 //Lara + Liesel positioning code
 
 
-@Autonomous(name = "Auto", group = "Cosmo")
-//@Disabled
-public class mainAuto extends LinearOpMode {
+@Autonomous(name = "oldAuto", group = "Cosmo")
+@Disabled
+public class oldAuto extends LinearOpMode {
 
     /* Declare OpMode members. */
     Hardware2019 Cosmo = new Hardware2019();   // Use a Pushbot's hardware
