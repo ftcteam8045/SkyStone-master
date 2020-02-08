@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode.Skystone;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -58,7 +59,8 @@ public class testHardware
 //    public DcMotor  rightRear   = null;
 //    public Servo    fServoL  = null;
 //    public Servo    fServoR  = null;
-
+    public AnalogInput sharp;
+    public AnalogInput sharp2;
     //    public Servo    rightClaw   = null;
 
     //public com.qualcomm.hardware.rev.RevBlinkinLedDriver.BlinkinPattern LEDpattern;
@@ -205,7 +207,9 @@ public class testHardware
         imu.initialize(parameters);
 
 
-
+        //Sharp IR Sensors
+        sharp = hwMap.analogInput.get("sharpir");
+        sharp2 = hwMap.analogInput.get("sharpir2");
         //sensor = hwMap.get(DistanceSensor.class, "sensor");
 
 

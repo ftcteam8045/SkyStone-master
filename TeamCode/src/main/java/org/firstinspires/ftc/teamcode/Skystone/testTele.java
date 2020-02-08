@@ -4,21 +4,27 @@ import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 
-@TeleOp(name = "testTele", group = "8045")  // @Autonomous(...) is the other common choice
+@TeleOp(name = "testTeleRick", group = "8045")  // @Autonomous(...) is the other common choice
 @Disabled
 public class testTele extends OpMode {
 
     testHardware Cosmo;
+
+    public AnalogInput sharp;
+    public AnalogInput sharp2;
+
+
+
     private ElapsedTime runtime = new ElapsedTime();
     double timeLeft;
     // variables used during the configuration process
-
 
 
     //    double turnDirection;
@@ -54,6 +60,7 @@ public class testTele extends OpMode {
         Cosmo.init(hardwareMap);
 
 
+
         telemetry.addData("Status", "Initializing");
         telemetry.update();
 
@@ -74,65 +81,12 @@ public class testTele extends OpMode {
     @Override
     public void loop() {
 
-        timeLeft = 120 - runtime.seconds();
-
-//        // BACK mode
-
-        if (gamepad1.right_stick_button) {
-            if (rightbtnIsReleased) {
-                rightbtnIsReleased = false;
-                frontIsForward = !frontIsForward;
-            }
-        } else {
-            rightbtnIsReleased = true;
-        }
-
-//        if(gamepad1.dpad_up){
-//            Cosmo.fServoR.setPosition(0.8);
-//            Cosmo.fServoL.setPosition(0.2);
-//
-//        }
-//
-//        if(gamepad1.dpad_down){
-//            Cosmo.fServoR.setPosition(0.2);
-//            Cosmo.fServoL.setPosition(0.8);
-//
-//        }
-
-        /**  set lights color  **/
-        /** 2M Distance Sensor Code  */
-
-//        Color.RGBToHSV((int)(Cosmo.sensorColor.red() * 255), (int)(Cosmo.sensorColor.green() * 255), (int)(Cosmo.sensorColor.blue() * 255), hsvValues);
-//        if (hsvValues[0] > grayRedBorder && hsvValues[0] < grayBlueBorder ) {
-//            Cosmo.LEDDriver.setPattern(teamColor);
-//        } else {
-//            Cosmo.LEDDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.WHITE);
-//        }
-
-
-        /**  set drive speed  **/
-
-        if (gamepad1.left_bumper) {
-            topSpeed = 1.0;
-        } else if (gamepad1.left_trigger > 0.1) {
-            topSpeed = 0.3;
-        }
-        else {
-            topSpeed = 0.6;
-        }
-//        /** set driving colors **/
-//        if (topSpeed == 0.4) {
-//            Cosmo.LEDDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.DARK_BLUE);
-//        } else {
-//            Cosmo.LEDDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
-//        }
-
-        /** DRIVE  HERE   */
-
-//        drivesmart(-gamepad1.right_stick_x, -gamepad1.right_stick_y, gamepad1.left_stick_x);
-
-        //telemetry.addData("range", String.format("%.01f mm", Cosmo.sensor.getDistance(DistanceUnit.MM)));
-
+        double irvoltagetest = Cosmo.sharp.getVoltage();
+        double irdistancetest = -7.411 * Math.pow(irvoltagetest, 3) + 52.356 * Math.pow(irvoltagetest, 2) - 125.222 * irvoltagetest + 111.659;
+        telemetry.addData("", "Sharp volts, Distance(cm): %4.2f  %4.1f", irvoltagetest, irdistancetest);
+        double irvoltagetest2 = Cosmo.sharp2.getVoltage();
+        double irdistancetest2 = -7.411 * Math.pow(irvoltagetest2, 3) + 52.356 * Math.pow(irvoltagetest2, 2) - 125.222 * irvoltagetest2 + 111.659;
+        telemetry.addData("", "Sharp2 volts, Distance(cm): %4.2f  %4.1f", irvoltagetest2, irdistancetest2);
 
         telemetry.update();
     }

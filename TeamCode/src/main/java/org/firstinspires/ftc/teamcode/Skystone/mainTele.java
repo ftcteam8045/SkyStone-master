@@ -3,11 +3,13 @@ package org.firstinspires.ftc.teamcode.Skystone;
 import android.graphics.Color;
 
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import java.util.concurrent.Executors;
@@ -26,6 +28,7 @@ public class mainTele extends OpMode {
     // variables used during the configuration process
 
 
+  //  public RevBlinkinLedDriver.BlinkinPattern teamColor = RevBlinkinLedDriver.BlinkinPattern.BLUE;
 
 
 
@@ -158,7 +161,7 @@ public class mainTele extends OpMode {
             Cosmo.clawMid.setPosition(0.0);
             Cosmo.clawTop.setPosition(0.98);
         }
-        if(gamepad1.a) { //clamp block
+        if(gamepad1.start == false && gamepad2.start == false && gamepad1.a) { //clamp block
             Cosmo.clawBot.setPosition(0.275);
             sleep(200);
             Cosmo.clawTop.setPosition(0.59);
@@ -171,7 +174,7 @@ public class mainTele extends OpMode {
             Cosmo.clawTop.setPosition(0.59);
 
         }
-        if(gamepad1.b) { //drop block while lifted up
+        if(gamepad1.start == false && gamepad2.start == false && gamepad1.b) { //drop block while lifted up
             Cosmo.clawBot.setPosition(0.74);
             Cosmo.clawMid.setPosition(0.15);
             Cosmo.clawTop.setPosition(0.98);
@@ -183,14 +186,14 @@ public class mainTele extends OpMode {
 
         if(gamepad1.dpad_up == true){
 
-            Cosmo.clamp1.setPosition(0.99);
-            Cosmo.clamp2.setPosition(0.08);
+            Cosmo.clamp1.setPosition(0.60);
+            Cosmo.clamp2.setPosition(0.50);
 
         }
         if(gamepad1.dpad_down == true){
 
-            Cosmo.clamp1.setPosition(0.42);
-            Cosmo.clamp2.setPosition(0.65);
+            Cosmo.clamp1.setPosition(0.50);
+            Cosmo.clamp2.setPosition(0.60);
 
         }
         /** INTAKE CONTROLS IN TELE **/
@@ -235,8 +238,8 @@ public class mainTele extends OpMode {
         if(intakeOnF) {
             if (Cosmo.leftIntake.getPower() == 0.0) {
 
-                Cosmo.leftIntake.setPower(0.8);
-                Cosmo.rightIntake.setPower(0.8);
+                Cosmo.leftIntake.setPower(1.0);
+                Cosmo.rightIntake.setPower(1.0);
                 intakeOnF = false;
                 goIntakeF = false;
 
@@ -250,6 +253,40 @@ public class mainTele extends OpMode {
 
             }
         }
+
+        /** LIFT MOTOR CONTROLS FOR DRIVER 2 **/
+
+
+        if(Math.abs(gamepad2.left_stick_y) > 0.04){  // LIFT AND LOWER MOTOR
+
+            Cosmo.leftLift.setPower(gamepad2.left_stick_y);
+        } else {
+            Cosmo.leftLift.setPower(0);
+
+        }
+
+        if(Math.abs(gamepad2.right_stick_y) > 0.04){  // LIFT AND LOWER MOTOR
+
+            Cosmo.rightLift.setPower(gamepad2.right_stick_y);
+        } else {
+            Cosmo.rightLift.setPower(0);
+
+        }
+
+        /** ARM CONTROLS FOR DRIVER 2 **/
+
+        if(gamepad1.start == false && gamepad2.start == false && gamepad2.b){   // OPEN ARM CLAMP
+
+            Cosmo.armGrabber.setPosition(1);
+
+        }
+        if(gamepad1.start == false && gamepad2.start == false && gamepad2.a){   // CLOSE ARM CLAMP
+
+            Cosmo.armGrabber.setPosition(0);
+
+        }
+
+
 
 
         /** DISTANCE SENSOR FOUNDATION TRACKING SOFTWARE **/

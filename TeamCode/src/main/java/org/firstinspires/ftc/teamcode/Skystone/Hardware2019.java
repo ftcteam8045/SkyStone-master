@@ -59,13 +59,16 @@ public class Hardware2019
     public DcMotor  rightRear   = null;
     public DcMotor  leftIntake    = null;
     public DcMotor  rightIntake   = null;
+    public DcMotor  leftLift    = null;
+    public DcMotor  rightLift   = null;
     public Servo clamp1 = null;
     public Servo clamp2 = null;
     public Servo clawTop = null;
     public Servo clawMid = null;
     public Servo clawBot = null;
+    public Servo armGrabber = null;
 
-
+    //public com.qualcomm.hardware.rev.RevBlinkinLedDriver LEDDriver;
 
     //    public Servo    rightClaw   = null;
 
@@ -116,6 +119,8 @@ public class Hardware2019
     public DistanceSensor sideSensor;
 
 
+
+
     /* Constructor */
     public Hardware2019(){
 
@@ -132,6 +137,7 @@ public class Hardware2019
 
 
         // LED lights
+        //LEDDriver = hwMap.get(com.qualcomm.hardware.rev.RevBlinkinLedDriver.class, "ledlights");
         //LEDpattern =  com.qualcomm.hardware.rev.RevBlinkinLedDriver.BlinkinPattern.RAINBOW_RAINBOW_PALETTE;
 
         clamp1 = hwMap.get(Servo.class, "clamp_1");
@@ -139,6 +145,7 @@ public class Hardware2019
         clawTop = hwMap.get(Servo.class, "claw_top");
         clawMid = hwMap.get(Servo.class, "claw_mid");
         clawBot = hwMap.get(Servo.class, "claw_bot");
+        armGrabber = hwMap.get(Servo.class, "arm_grab");
 
 
         // Define and Initialize Motors
@@ -148,13 +155,15 @@ public class Hardware2019
         rightRear = hwMap.get(DcMotor.class, "right_rear");
         leftIntake  = hwMap.get(DcMotor.class, "left_intake");
         rightIntake = hwMap.get(DcMotor.class, "right_intake");
-
+        leftLift  = hwMap.get(DcMotor.class, "left_lift");
+        rightLift = hwMap.get(DcMotor.class, "right_lift");
         // this should be for neverest  & using it for Matrix/yellowjackets as well.
          leftFront.setDirection(DcMotor.Direction.FORWARD);
          leftRear.setDirection(DcMotor.Direction.FORWARD);
          rightFront.setDirection(DcMotor.Direction.REVERSE);
          rightRear.setDirection(DcMotor.Direction.REVERSE);
          rightIntake.setDirection(DcMotor.Direction.REVERSE);
+         rightLift.setDirection(DcMotor.Direction.REVERSE);
 //        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -162,7 +171,8 @@ public class Hardware2019
         rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftIntake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightIntake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
+        leftLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 ////this is for Tetrix
 //        leftFront.setDirection(DcMotor.Direction.REVERSE);
@@ -179,7 +189,8 @@ public class Hardware2019
         rightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftIntake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightIntake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
+        leftLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
         // Set all motors to zero power
@@ -189,7 +200,8 @@ public class Hardware2019
         rightRear.setPower(0);
         leftIntake.setPower(0);
         rightIntake.setPower(0);
-
+        leftLift.setPower(0);
+        rightLift.setPower(0);
 
         // Define and Initialize Motors
         // Set all motors to run without encoders.
@@ -200,7 +212,8 @@ public class Hardware2019
         rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
+        leftLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
 
@@ -235,6 +248,8 @@ public class Hardware2019
         dis1 = hwMap.get(DistanceSensor.class, "dis_sensor1");
         dis2 = hwMap.get(DistanceSensor.class, "dis_sensor2");
         sideSensor = hwMap.get(DistanceSensor.class, "side_sensor");
+
+
 
 
 

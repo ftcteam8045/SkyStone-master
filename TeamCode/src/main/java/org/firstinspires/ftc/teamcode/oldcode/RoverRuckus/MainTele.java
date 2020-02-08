@@ -153,7 +153,7 @@ public class MainTele extends OpMode {
         if (gamepad1.left_bumper) {
             topSpeed = 1.0;
         } else if (gamepad1.left_trigger > 0.1) {
-            topSpeed = 0.3;
+            topSpeed = 0.2;
         }
         else {
             topSpeed = 0.6;
