@@ -150,7 +150,7 @@ public class mainTele extends OpMode {
 
 
         if(gamepad1.dpad_right) {
-            Cosmo.clawBot.setPosition(0.79);
+            Cosmo.clawBot.setPosition(0.80);
             Cosmo.clawMid.setPosition(0.85);
             sleep(200);
             Cosmo.clawTop.setPosition(0.25);

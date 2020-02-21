@@ -61,7 +61,7 @@ public class mainAutoCV extends LinearOpMode {
      **/
     public int waitTime1 = 0;
     public boolean skystonePosition = true;
-    public boolean teamIsRed = false;
+    public boolean teamIsRed = true;
     public boolean left = false;
     public boolean center = false;
     public boolean right = true;
@@ -215,7 +215,7 @@ public class mainAutoCV extends LinearOpMode {
                 } else {
                     mecanumDrive(0.6, 4.5 * s, 180, 0); //drive forward
                 }
-                mecanumDrive(0.25, 2.5*s, 180, 0); //drive forward
+                mecanumDrive(0.25, 6*s, 180, 0); //drive forward
                 Cosmo.clamp1.setPosition(0.19);
                 Cosmo.clamp2.setPosition(0.88);
                 sleep(400);
@@ -453,7 +453,7 @@ public class mainAutoCV extends LinearOpMode {
                 mecanumDrive(0.75, -1.70 * s, 90, 0);
                 mecanumDrivetoObject(0.4, -9 * s, 90, -90, 124);
                 grabBlockWithClaw();
-                mecanumDrive(0.8, 8 * s, 90, -90);
+                mecanumDrive(0.8, 10 * s, 90, -90);
                 mecanumDrive(0.9, 19.6 * s, 90, 0);
                 mecanumDrivetoTape(0.3, 6 * s, 90, 0);
 
@@ -465,7 +465,7 @@ public class mainAutoCV extends LinearOpMode {
                 mecanumDrive(0.75, -12.5 * s, 90, 0);
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
                 grabBlockWithClaw();
-                mecanumDrive(0.8, 8 * s, 90, -90);
+                mecanumDrive(0.8, 10 * s, 90, -90);
                 mecanumDrive(0.9, 32.6 * s, 91, 0);
                 mecanumDrivetoTape(0.3, 12 * s, 90, 0);
             }
@@ -473,11 +473,11 @@ public class mainAutoCV extends LinearOpMode {
             if (right) {
                 mecanumTurn(1.0, 90); // turn right
                 readyToGrab();
-                mecanumDrive(0.75, -7 * s, 90, 0);
+                mecanumDrive(0.75, -6.7 * s, 90, 0);
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
                 grabBlockWithClaw();
-                mecanumDrive(0.8, 8 * s, 90, -90);
-                mecanumDrive(0.9, 28 * s, 91, 0);
+                mecanumDrive(0.8, 10 * s, 90, -90);
+                mecanumDrive(0.9, 26.8 * s, 91, 0);
                 mecanumDrivetoTape(0.3, 12 * s, 90, 0);
 
             }
@@ -489,7 +489,7 @@ public class mainAutoCV extends LinearOpMode {
                 mecanumDrive(0.75, 10.3 * s, 90, 0);
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
                 grabBlockWithClaw();
-                mecanumDrive(0.8, 8 * s, 90, -90);
+                mecanumDrive(0.8, 10 * s, 90, -90);
                 mecanumDrive(0.9, -37 * s, 89, 0);
                 mecanumDrivetoTape(0.3, -12 * s, 90, 0);
             }
@@ -500,8 +500,8 @@ public class mainAutoCV extends LinearOpMode {
                 mecanumDrive(0.75, 16.1 * s, 90, 0);
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
                 grabBlockWithClaw();
-                mecanumDrive(0.8, 8 * s, 90, -90);
-                mecanumDrive(0.9, -40 * s, 90, 0);
+                mecanumDrive(0.8, 10 * s, 90, -90);
+                mecanumDrive(0.9, -42 * s, 90, 0);
                 mecanumDrivetoTape(0.3, -12 * s, 90, 0);
 
             }
@@ -509,11 +509,11 @@ public class mainAutoCV extends LinearOpMode {
             if (right) {
                 mecanumTurn(1.0, 90); // turn right
                 readyToGrab();
-                mecanumDrive(0.75, 5.1 * s, 90, 0);
+                mecanumDrive(0.75, 4.9 * s, 90, 0);
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 124);
                 grabBlockWithClaw();
-                mecanumDrive(0.8, 8 * s, 90, -90);
-                mecanumDrive(0.9, -38 * s, 89, 0);
+                mecanumDrive(0.8, 10 * s, 90, -90);
+                mecanumDrive(0.9, -35 * s, 89, 0);
                 mecanumDrivetoTape(0.3, -6 * s, 90, 0);
 
             }
@@ -551,7 +551,7 @@ public class mainAutoCV extends LinearOpMode {
                 sleep(250);
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
                 grabBlockWithClaw();
-                mecanumDrive(0.8, 8 * s, 90, -90);
+                mecanumDrive(0.8, 10 * s, 90, -90);
                 mecanumDrive(0.9, 16.8 * s, 89, 0);
                 mecanumDrivetoTape(0.3, 10 * s, 90, 0);
             }
@@ -565,7 +565,7 @@ public class mainAutoCV extends LinearOpMode {
                 sleep(250);
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
                 grabBlockWithClaw();
-                mecanumDrive(0.8, 8 * s, 90, -90);
+                mecanumDrive(0.8, 10 * s, 90, -90);
                 mecanumDrive(0.9, 10 * s, 90, 0);
                 mecanumDrivetoTape(0.3, 10 * s, 90, 0);
 
@@ -581,8 +581,8 @@ public class mainAutoCV extends LinearOpMode {
                 sleep(250);
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
                 grabBlockWithClaw();
-                mecanumDrive(0.8, 8 * s, 90, -90);
-                mecanumDrive(0.9, -22 * s, 90, 0);
+                mecanumDrive(0.8, 10 * s, 90, -90);
+                mecanumDrive(0.9, -20 * s, 90, 0);
                 mecanumDrivetoTape(0.3, -10 * s, 90, 0);
 
 
@@ -590,14 +590,14 @@ public class mainAutoCV extends LinearOpMode {
 
             if (center) {
                 Cosmo.clawMid.setPosition(0.0);
-                mecanumDrive(0.8, 29 * s, 90, 0);
+                mecanumDrive(0.8, 27 * s, 90, 0);
                 Cosmo.clawTop.setPosition(0.98);  //ready to clamp
                 sleep(200);
                 Cosmo.clawBot.setPosition(0.36);
                 sleep(250);
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
                 grabBlockWithClaw();
-                mecanumDrive(0.8, 8 * s, 90, -90);
+                mecanumDrive(0.8, 10 * s, 90, -90);
                 mecanumDrive(0.9, -24 * s, 90, 0);
                 mecanumDrivetoTape(0.3, -8 * s, 90, 0);
             }
@@ -605,15 +605,15 @@ public class mainAutoCV extends LinearOpMode {
             if (right) {
                 mecanumDrive(0.8, 30 * s, 90, 0);
                 mecanumTurn(1.0, -88); // turn right
-                mecanumDrive(0.8, -3.15 * s, -90, 0);
-                mecanumDrive(0.7, -15.2*s, -90, 90);
+                mecanumDrive(0.8, -2.5 * s, -90, 0);
+                mecanumDrive(0.7, -16.2*s, -90, 90);
                 Cosmo.leftIntake.setPower(0.8);
                 Cosmo.rightIntake.setPower(0.8);
-                mecanumDrive(0.35, -3.5*s, -90, 0);
+                mecanumDrive(0.35, -3.65*s, -90, 0);
                 Cosmo.leftIntake.setPower(0.0);
                 Cosmo.rightIntake.setPower(0.0);
                 mecanumDrive(0.45, 4.3*s, -90, 0);
-                mecanumDrive(0.7, 16*s, -90, 90);
+                mecanumDrive(0.7, 18*s, -90, 90);
                 mecanumDrive(0.9, 22.5 * s, -90, 0);
                 mecanumDrivetoTape(0.3, 8 * s, -90, 0);
             }
@@ -654,7 +654,14 @@ public class mainAutoCV extends LinearOpMode {
         }else {
             mecanumDrive(0.9, distanceFromTape * s, 89, 0);
         }
-        mecanumDrivetoObject(0.45, -8 * s, 90, -90, 124);
+
+        if(teamIsRed){
+            mecanumDrivetoObject(0.45, -13 * s, 90, -90, 124);
+
+        }else {
+            mecanumDrivetoObject(0.45, -10 * s, 90, -90, 124);
+
+        }
         if(layer == 1) {
             Cosmo.clawBot.setPosition(0.4);
             sleep(200);
@@ -671,7 +678,11 @@ public class mainAutoCV extends LinearOpMode {
             Cosmo.clawTop.setPosition(0.59);
 
         }
-        mecanumDrive(0.5, 4.5 * s, 90, -90);
+        if(teamIsRed){
+            mecanumDrive(0.8, 10.5 * s, 90, -90);
+        } else {
+            mecanumDrive(0.8, 7.5 * s, 90, -90);
+        }
         Cosmo.clawBot.setPosition(0.79);
         Cosmo.clawMid.setPosition(0.85);
         sleep(100);
