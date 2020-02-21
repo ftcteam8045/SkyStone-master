@@ -61,7 +61,7 @@ public class mainAutoCV extends LinearOpMode {
      **/
     public int waitTime1 = 0;
     public boolean skystonePosition = true;
-    public boolean teamIsRed = true;
+    public boolean teamIsRed = false;
     public boolean left = false;
     public boolean center = false;
     public boolean right = true;
@@ -195,8 +195,8 @@ public class mainAutoCV extends LinearOpMode {
             if (skystonePosition) {            /** skystone zone drive  **/
 
                 /** scans for skystone first **/
-                Cosmo.clamp1.setPosition(0.99);
-                Cosmo.clamp2.setPosition(0.08);
+                Cosmo.clamp1.setPosition(0.76);
+                Cosmo.clamp2.setPosition(0.32);
                 mecanumDrive(0.6, -15*s, 0, 0); //drive forward
                 grabSkystone();
                 deliverBlock(29, 1);
@@ -211,16 +211,13 @@ public class mainAutoCV extends LinearOpMode {
                 mecanumTurn(1.0, 180); // turn right again
                 if(!left) {
                     mecanumDrive(0.8, -8 * s, 180, -90); //strafe over
-                }Cosmo.clamp1.setPosition(0.65);
-                Cosmo.clamp2.setPosition(0.35);
-                if(!left) {
                     mecanumDrive(0.6, 2 * s, 180, 0); //drive forward
                 } else {
                     mecanumDrive(0.6, 4.5 * s, 180, 0); //drive forward
                 }
                 mecanumDrive(0.25, 2.5*s, 180, 0); //drive forward
-                Cosmo.clamp1.setPosition(0.42);
-                Cosmo.clamp2.setPosition(0.65);
+                Cosmo.clamp1.setPosition(0.19);
+                Cosmo.clamp2.setPosition(0.88);
                 sleep(400);
                 mecanumDrive(0.8, -16*s, 165, 30); //drive back from foundation
                 mecanumDrive(0.9, -14*s, 90, 0); //drive back from foundation
@@ -228,15 +225,13 @@ public class mainAutoCV extends LinearOpMode {
                     Cosmo.leftIntake.setPower(-0.4);
                     Cosmo.rightIntake.setPower(-0.4);
                 }
-                Cosmo.clamp1.setPosition(0.99);
-                Cosmo.clamp2.setPosition(0.08);
                 mecanumDrive(0.6, 12*s, 90, 0); //place foundation
                 if(left){
                     Cosmo.leftIntake.setPower(0.0);
                     Cosmo.rightIntake.setPower(0.0);
                 }
-                Cosmo.clamp1.setPosition(0.99);
-                Cosmo.clamp2.setPosition(0.08);
+                Cosmo.clamp1.setPosition(0.76);
+                Cosmo.clamp2.setPosition(0.32);
                 mecanumDrive(0.8, 11*s, 90, 90); //strafe over
                 mecanumDrive(1.0, -29*s, 91, 0);  //drive until tape is detected
 
@@ -253,8 +248,8 @@ public class mainAutoCV extends LinearOpMode {
             if (skystonePosition) {            /** skystone zone drive  **/
 
                 /** scans for skystone first **/
-                Cosmo.clamp1.setPosition(0.99);
-                Cosmo.clamp2.setPosition(0.08);
+                Cosmo.clamp1.setPosition(0.76);
+                Cosmo.clamp2.setPosition(0.32);
                 mecanumDrive(0.6, -15*s, 0, 0); //drive forward
                 grabSkystone();
                 deliverBlock(-23, 1);
@@ -268,12 +263,10 @@ public class mainAutoCV extends LinearOpMode {
                 }
                 mecanumTurn(1.0, -180); // turn right again
                 mecanumDrive(0.8, 5*s, -180, -90); //strafe over
-                Cosmo.clamp1.setPosition(0.65);
-                Cosmo.clamp2.setPosition(0.35);
                 mecanumDrive(0.6, 2*s, -180, 0); //drive forward
                 mecanumDrive(0.25, 2.5*s, -180, 0); //drive forward
-                Cosmo.clamp1.setPosition(0.42);
-                Cosmo.clamp2.setPosition(0.65);
+                Cosmo.clamp1.setPosition(0.19);
+                Cosmo.clamp2.setPosition(0.88);
                 sleep(400);
                 mecanumDrive(0.8, -14.5*s, -155, 30); //drive back from foundation
                 mecanumDrive(0.9, -14*s, -90, 0); //drive back from foundation
@@ -281,15 +274,13 @@ public class mainAutoCV extends LinearOpMode {
                     Cosmo.leftIntake.setPower(-0.4);
                     Cosmo.rightIntake.setPower(-0.4);
                 }
-                Cosmo.clamp1.setPosition(0.99);
-                Cosmo.clamp2.setPosition(0.08);
                 mecanumDrive(0.6, 12*s, -90, 0); //place foundation
                 if(right){
                     Cosmo.leftIntake.setPower(0.0);
                     Cosmo.rightIntake.setPower(0.0);
                 }
-                Cosmo.clamp1.setPosition(0.99);
-                Cosmo.clamp2.setPosition(0.08);
+                Cosmo.clamp1.setPosition(0.76);
+                Cosmo.clamp2.setPosition(0.32);
                 mecanumDrive(0.8, 9*s, -90, -90); //strafe over
                 mecanumDrive(1.0, -29*s, -91, 0);  //drive until tape is detected
 

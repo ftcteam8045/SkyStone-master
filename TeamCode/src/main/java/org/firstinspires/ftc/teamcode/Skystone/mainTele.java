@@ -184,16 +184,16 @@ public class mainTele extends OpMode {
 
         /** CONTROLS FOR FOUNDATION CLAMP SERVOS **/
 
-        if(gamepad1.dpad_up == true){
+        if(gamepad1.dpad_up == true){  //up
 
-            Cosmo.clamp1.setPosition(0.60);
-            Cosmo.clamp2.setPosition(0.50);
+            Cosmo.clamp1.setPosition(0.76);
+            Cosmo.clamp2.setPosition(0.32);
 
         }
-        if(gamepad1.dpad_down == true){
+        if(gamepad1.dpad_down == true){  //down
 
-            Cosmo.clamp1.setPosition(0.50);
-            Cosmo.clamp2.setPosition(0.60);
+            Cosmo.clamp1.setPosition(0.19);
+            Cosmo.clamp2.setPosition(0.88);
 
         }
         /** INTAKE CONTROLS IN TELE **/
