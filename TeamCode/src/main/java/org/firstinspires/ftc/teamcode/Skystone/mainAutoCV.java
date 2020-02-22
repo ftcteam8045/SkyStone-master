@@ -199,7 +199,7 @@ public class mainAutoCV extends LinearOpMode {
                 Cosmo.clamp2.setPosition(0.32);
                 mecanumDrive(0.6, -15*s, 0, 0); //drive forward
                 grabSkystone();
-                deliverBlock(29, 1);
+                deliverBlock(30, 1);
                 mecanumDrive(0.9, -18, 90, 0);
                 mecanumDrivetoTape(0.3,  -10, 90, 0);
                 grabSkystoneAgain();
@@ -210,30 +210,30 @@ public class mainAutoCV extends LinearOpMode {
                 }
                 mecanumTurn(1.0, 180); // turn right again
                 if(!left) {
-                    mecanumDrive(0.8, -8 * s, 180, -90); //strafe over
+                    mecanumDrive(0.8, -14 * s, 180, -90); //strafe over
                     mecanumDrive(0.6, 2 * s, 180, 0); //drive forward
                 } else {
                     mecanumDrive(0.6, 4.5 * s, 180, 0); //drive forward
                 }
-                mecanumDrive(0.25, 6*s, 180, 0); //drive forward
+                mecanumDrive(0.25, 7.4*s, 180, 0); //drive forward
                 Cosmo.clamp1.setPosition(0.19);
                 Cosmo.clamp2.setPosition(0.88);
                 sleep(400);
-                mecanumDrive(0.8, -16*s, 165, 30); //drive back from foundation
+                mecanumDrive(0.8, -18*s, 145, -12); //drive back from foundation
                 mecanumDrive(0.9, -14*s, 90, 0); //drive back from foundation
                 if(left){
                     Cosmo.leftIntake.setPower(-0.4);
                     Cosmo.rightIntake.setPower(-0.4);
                 }
-                mecanumDrive(0.6, 12*s, 90, 0); //place foundation
+                mecanumDrive(0.6, 17*s, 90, 0); //place foundation
                 if(left){
                     Cosmo.leftIntake.setPower(0.0);
                     Cosmo.rightIntake.setPower(0.0);
                 }
                 Cosmo.clamp1.setPosition(0.76);
                 Cosmo.clamp2.setPosition(0.32);
-                mecanumDrive(0.8, 11*s, 90, 90); //strafe over
-                mecanumDrive(1.0, -29*s, 91, 0);  //drive until tape is detected
+                mecanumDrive(0.8, 14*s, 90, 90); //strafe over
+                mecanumDrive(1.0, -28*s, 91, 0);  //drive until tape is detected
 
 
             } else {             /** foundation zone drive  **/
@@ -462,22 +462,22 @@ public class mainAutoCV extends LinearOpMode {
             if (center) {
                 mecanumTurn(1.0, 90); // turn right
                 readyToGrab();
-                mecanumDrive(0.75, -12.5 * s, 90, 0);
+                mecanumDrive(0.75, -12.8 * s, 90, 0);
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
                 grabBlockWithClaw();
                 mecanumDrive(0.8, 10 * s, 90, -90);
-                mecanumDrive(0.9, 32.6 * s, 91, 0);
+                mecanumDrive(0.9, 31.8 * s, 90, 0);
                 mecanumDrivetoTape(0.3, 12 * s, 90, 0);
             }
 
             if (right) {
                 mecanumTurn(1.0, 90); // turn right
                 readyToGrab();
-                mecanumDrive(0.75, -6.7 * s, 90, 0);
+                mecanumDrive(0.75, -6 * s, 90, 0);
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
                 grabBlockWithClaw();
                 mecanumDrive(0.8, 10 * s, 90, -90);
-                mecanumDrive(0.9, 26.8 * s, 91, 0);
+                mecanumDrive(0.9, 25 * s, 90, 0);
                 mecanumDrivetoTape(0.3, 12 * s, 90, 0);
 
             }
@@ -544,7 +544,7 @@ public class mainAutoCV extends LinearOpMode {
 
             if (center) {
                 Cosmo.clawMid.setPosition(0.0);
-                mecanumDrive(0.8, -16.3 * s, 90, 0);
+                mecanumDrive(0.8, -15.6 * s, 90, 0);
                 Cosmo.clawTop.setPosition(0.98);  //ready to clamp
                 sleep(200);
                 Cosmo.clawBot.setPosition(0.36);
@@ -552,13 +552,13 @@ public class mainAutoCV extends LinearOpMode {
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
                 grabBlockWithClaw();
                 mecanumDrive(0.8, 10 * s, 90, -90);
-                mecanumDrive(0.9, 16.8 * s, 89, 0);
+                mecanumDrive(0.9, 13.5 * s, 89, 0);
                 mecanumDrivetoTape(0.3, 10 * s, 90, 0);
             }
 
             if (right) {
                 Cosmo.clawMid.setPosition(0.0);
-                mecanumDrive(0.8, -11 * s, 90, 0);
+                mecanumDrive(0.8, -10 * s, 90, 0);
                 Cosmo.clawTop.setPosition(0.98);  //ready to clamp
                 sleep(200);
                 Cosmo.clawBot.setPosition(0.36);
