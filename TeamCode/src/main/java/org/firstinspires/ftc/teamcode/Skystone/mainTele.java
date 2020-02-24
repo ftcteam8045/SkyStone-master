@@ -192,8 +192,8 @@ public class mainTele extends OpMode {
         }
         if(gamepad1.dpad_down == true){  //down
 
-            Cosmo.clamp1.setPosition(0.19);
-            Cosmo.clamp2.setPosition(0.88);
+            Cosmo.clamp1.setPosition(0.18);
+            Cosmo.clamp2.setPosition(0.89);
 
         }
         /** INTAKE CONTROLS IN TELE **/
