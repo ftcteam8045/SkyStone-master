@@ -65,6 +65,10 @@ public class mainAutoCV extends LinearOpMode {
     public boolean left = false;
     public boolean center = false;
     public boolean right = true;
+    public boolean correction1 = false;
+    public boolean correction2 = false;
+    public boolean over = false;
+    public boolean under = false;
     public double grayHueValue = 90.0;  // color sensor values
     public double redHueValue = 5;
     public double s = 0.72727;
@@ -209,6 +213,8 @@ public class mainAutoCV extends LinearOpMode {
                     mecanumDrive(0.9, 35 * s, 90, 0);
                 }
                 mecanumTurn(1.0, 180); // turn right again
+                Cosmo.clamp1.setPosition(0.296);
+                Cosmo.clamp2.setPosition(0.605);
                 if(!left) {
                     mecanumDrive(0.8, -14 * s, 180, -90); //strafe over
                     mecanumDrive(0.6, 2 * s, 180, 0); //drive forward
@@ -263,6 +269,8 @@ public class mainAutoCV extends LinearOpMode {
                 }
                 mecanumTurn(1.0, -180); // turn right again
                 mecanumDrive(0.8, 5*s, -180, -90); //strafe over
+                Cosmo.clamp1.setPosition(0.296);
+                Cosmo.clamp2.setPosition(0.605);
                 mecanumDrive(0.6, 3*s, -180, 0); //drive forward
                 mecanumDrive(0.25, 2.5*s, -180, 0); //drive forward
                 Cosmo.clamp1.setPosition(0.18);
@@ -489,9 +497,10 @@ public class mainAutoCV extends LinearOpMode {
                 readyToGrab();
                 mecanumDrive(0.75, 10.3 * s, 90, 0);
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
+                beforeClampCorrection1(0.3, -15, 90, 0, 260);
                 grabBlockWithClaw();
                 mecanumDrive(0.8, 10 * s, 90, -90);
-                mecanumDrive(0.9, -37 * s, 89, 0);
+                mecanumDrive(0.9, -37 * s, 90, 0);
                 mecanumDrivetoTape(0.3, -12 * s, 90, 0);
             }
 
@@ -514,7 +523,7 @@ public class mainAutoCV extends LinearOpMode {
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 124);
                 grabBlockWithClaw();
                 mecanumDrive(0.8, 10 * s, 90, -90);
-                mecanumDrive(0.9, -30 * s, 89, 0);
+                mecanumDrive(0.9, -30 * s, 90, 0);
                 mecanumDrivetoTape(0.3, -8 * s, 90, 0);
 
             }
@@ -582,6 +591,7 @@ public class mainAutoCV extends LinearOpMode {
                 Cosmo.clawBot.setPosition(0.36);
                 sleep(250);
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
+                beforeClampCorrection1(0.3, -15, 90, 0, 800);
                 grabBlockWithClaw();
                 mecanumDrive(0.8, 10 * s, 90, -90);
                 mecanumDrive(0.9, -20 * s, 90, 0);
@@ -971,6 +981,153 @@ public class mainAutoCV extends LinearOpMode {
         Cosmo.leftRear.setPower(0.0);
     }
 
+
+    public void beforeClampCorrection1(double speed, double distance, double robot_orientation, double drive_direction, double distanceToObject) {
+        if(Cosmo.backSensor.getDistance(DistanceUnit.MM) > distanceToObject) {
+            over = true;
+            telemetry.addLine("OVER");
+        } else if (Cosmo.backSensor.getDistance(DistanceUnit.MM) < distanceToObject){
+            under = true;
+            telemetry.addLine("UNDER");
+            distance = -distance;
+        }
+        double max;
+        double multiplier;
+        int right_start;
+        int left_start;
+        int moveCounts;
+        //int drive_direction = -90;
+        moveCounts = (int) (distance * Cosmo.COUNTS_PER_INCH);
+        right_start = Cosmo.rightRear.getCurrentPosition();
+        left_start = Cosmo.leftRear.getCurrentPosition();
+        double lfpower;
+        double lrpower;
+        double rfpower;
+        double rrpower;
+
+        double lfbase;
+        double lrbase;
+        double rfbase;
+        double rrbase;
+        lfbase = signum(distance) * Math.cos(Math.toRadians(drive_direction + 45));
+        lrbase = signum(distance) * Math.sin(Math.toRadians(drive_direction + 45));
+        rfbase = signum(distance) * Math.sin(Math.toRadians(drive_direction + 45));
+        rrbase = signum(distance) * Math.cos(Math.toRadians(drive_direction + 45));
+        /** this is the main test to see if you've gone far enough,  add the color tape in here!
+         *  so you need a || (hue is less than so much || hue is > so much)
+         *
+         *  could also say  'while it's not withing a little bit of the gray reading'
+         *
+         * **/
+         // opmode has to be active
+
+
+            if(teamIsRed) { // TEAM IS RED
+
+            } else {// TEAM IS BLUE
+
+                /* IF ROBOT IS TOO FAR FROM WALL - OVER DISTANCETOOBJECT*/
+
+                while (opModeIsActive() && Cosmo.backSensor.getDistance(DistanceUnit.MM) > distanceToObject && over) {         //  stop if close enough to block
+                    //Determine correction
+                    double correction = robot_orientation - getheading();
+                    if (correction <= -180) {
+                        correction += 360;
+                    } else if (correction >= 180) {                      // correction should be +/- 180 (to the left negative, right positive)
+                        correction -= 360;
+                    }
+                    lrpower = lrbase; //MIGHT BE MORE EFFECIENT TO COMBINE THESE WITHT HE ADJUSTMENT PART AND SET ADJUSTMENT TO ZERO IF NOT NEEDED
+                    lfpower = lfbase;
+                    rrpower = rrbase;
+                    rfpower = rfbase;
+                    if (abs(correction) > drive_THRESHOLD) {//If you are off
+                        //Apply power to one side of the robot to turn the robot back to the right heading
+                        double right_adjustment = Range.clip((drive_COEF * correction / 45), -1, 1);
+                        lrpower -= right_adjustment;
+                        lfpower -= right_adjustment;
+                        rrpower = rrbase + right_adjustment;
+                        rfpower = rfbase + right_adjustment;
+
+                    }//Otherwise you Are at the right orientation
+
+                    //Determine largest power being applied in either direction
+                    max = abs(lfpower);
+                    if (abs(lrpower) > max) max = abs(lrpower);
+                    if (abs(rfpower) > max) max = abs(rfpower);
+                    if (abs(rrpower) > max) max = abs(rrpower);
+
+                    multiplier = speed / max; //multiplier to adjust speeds of each wheel so you can have a max power of 1 on atleast 1 wheel
+
+                    lfpower *= multiplier;
+                    lrpower *= multiplier;
+                    rfpower *= multiplier;
+                    rrpower *= multiplier;
+
+                    Cosmo.leftFront.setPower(lfpower);
+                    Cosmo.leftRear.setPower(lrpower);
+                    Cosmo.rightFront.setPower(rfpower);
+                    Cosmo.rightRear.setPower(rrpower);
+
+                    telemetry.addData("Back Distance MM - ", Cosmo.backSensor.getDistance(DistanceUnit.MM));
+                    telemetry.update();
+                }
+                over = false;
+
+                /* IF ROBOT IS TOO CLOSE TO WALL - UNDER DISTANCETOOBJECT*/
+
+                while (opModeIsActive() && Cosmo.backSensor.getDistance(DistanceUnit.MM) < distanceToObject && under) {         //  stop if close enough to block
+                    //Determine correction
+                    double correction = robot_orientation - getheading();
+                    if (correction <= -180) {
+                        correction += 360;
+                    } else if (correction >= 180) {                      // correction should be +/- 180 (to the left negative, right positive)
+                        correction -= 360;
+                    }
+                    lrpower = lrbase; //MIGHT BE MORE EFFECIENT TO COMBINE THESE WITHT HE ADJUSTMENT PART AND SET ADJUSTMENT TO ZERO IF NOT NEEDED
+                    lfpower = lfbase;
+                    rrpower = rrbase;
+                    rfpower = rfbase;
+                    if (abs(correction) > drive_THRESHOLD) {//If you are off
+                        //Apply power to one side of the robot to turn the robot back to the right heading
+                        double right_adjustment = Range.clip((drive_COEF * correction / 45), -1, 1);
+                        lrpower -= right_adjustment;
+                        lfpower -= right_adjustment;
+                        rrpower = rrbase + right_adjustment;
+                        rfpower = rfbase + right_adjustment;
+
+                    }//Otherwise you Are at the right orientation
+
+                    //Determine largest power being applied in either direction
+                    max = abs(lfpower);
+                    if (abs(lrpower) > max) max = abs(lrpower);
+                    if (abs(rfpower) > max) max = abs(rfpower);
+                    if (abs(rrpower) > max) max = abs(rrpower);
+
+                    multiplier = speed / max; //multiplier to adjust speeds of each wheel so you can have a max power of 1 on atleast 1 wheel
+
+                    lfpower *= multiplier;
+                    lrpower *= multiplier;
+                    rfpower *= multiplier;
+                    rrpower *= multiplier;
+
+                    Cosmo.leftFront.setPower(lfpower);
+                    Cosmo.leftRear.setPower(lrpower);
+                    Cosmo.rightFront.setPower(rfpower);
+                    Cosmo.rightRear.setPower(rrpower);
+
+
+                }
+                under = false;
+
+            }
+        //gromit.driveTrain.stopMotors();
+        Cosmo.leftFront.setPower(0.0);
+        Cosmo.rightFront.setPower(0.0);
+        Cosmo.rightRear.setPower(0.0);
+        Cosmo.leftRear.setPower(0.0);
+
+
+    }
 
 
     public float getheading() {

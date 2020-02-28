@@ -126,9 +126,10 @@ public class mainTele extends OpMode {
 //            Cosmo.LEDDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.WHITE);
 //        }
 
-        telemetry.addData("Front Distance MM - ", Cosmo.dis1.getDistance(DistanceUnit.MM));
-        telemetry.addData("Back Distance MM - ", Cosmo.dis2.getDistance(DistanceUnit.MM));
-
+        telemetry.addData("Front Distance MM - ", Cosmo.frontSensor.getDistance(DistanceUnit.MM));
+        telemetry.addData("Back Distance MM - ", Cosmo.backSensor.getDistance(DistanceUnit.MM));
+        telemetry.addData("Clamp Side Distance MM - ", Cosmo.sideSensor.getDistance(DistanceUnit.MM));
+      //  telemetry.addData("Battery Side Distance MM - ", Cosmo.dis2.getDistance(DistanceUnit.MM));
         /**  set drive speed  **/
 
         if (gamepad1.left_bumper) {

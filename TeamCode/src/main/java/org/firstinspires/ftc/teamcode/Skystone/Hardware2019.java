@@ -114,8 +114,8 @@ public class Hardware2019
    // DistanceSensor sensor;
 
     public ColorSensor sensorColor;
-    public DistanceSensor dis1;
-    public DistanceSensor dis2;
+    public DistanceSensor frontSensor;
+    public DistanceSensor backSensor;
     public DistanceSensor sideSensor;
 
 
@@ -245,8 +245,8 @@ public class Hardware2019
 
         //sensor = hwMap.get(DistanceSensor.class, "sensor");
         sensorColor = hwMap.get(ColorSensor.class, "sensor_color");
-        dis1 = hwMap.get(DistanceSensor.class, "dis_sensor1");
-        dis2 = hwMap.get(DistanceSensor.class, "dis_sensor2");
+        frontSensor = hwMap.get(DistanceSensor.class, "dis_sensor1");
+        backSensor = hwMap.get(DistanceSensor.class, "dis_sensor2");
         sideSensor = hwMap.get(DistanceSensor.class, "side_sensor");
 
 
