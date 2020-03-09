@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 
 @TeleOp(name = "testTeleRick", group = "8045")  // @Autonomous(...) is the other common choice
-@Disabled
+//@Disabled
 public class testTele extends OpMode {
 
     testHardware Cosmo;
@@ -81,9 +81,9 @@ public class testTele extends OpMode {
     @Override
     public void loop() {
 
-        double irvoltagetest = Cosmo.sharp.getVoltage();
+        double irvoltagetest = Cosmo.batterySensor.getVoltage();
         double irdistancetest = -7.411 * Math.pow(irvoltagetest, 3) + 52.356 * Math.pow(irvoltagetest, 2) - 125.222 * irvoltagetest + 111.659;
-        telemetry.addData("", "Sharp volts, Distance(cm): %4.2f  %4.1f", irvoltagetest, irdistancetest);
+        telemetry.addData("", "Sharp volts, Distance (cm): %4.2f  %4.1f", irvoltagetest, irdistancetest);
         double irvoltagetest2 = Cosmo.sharp2.getVoltage();
         double irdistancetest2 = -7.411 * Math.pow(irvoltagetest2, 3) + 52.356 * Math.pow(irvoltagetest2, 2) - 125.222 * irvoltagetest2 + 111.659;
         telemetry.addData("", "Sharp2 volts, Distance(cm): %4.2f  %4.1f", irvoltagetest2, irdistancetest2);

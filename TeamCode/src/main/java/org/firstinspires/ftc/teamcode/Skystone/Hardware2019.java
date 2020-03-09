@@ -117,7 +117,8 @@ public class Hardware2019
     public DistanceSensor frontSensor;
     public DistanceSensor backSensor;
     public DistanceSensor sideSensor;
-
+    public AnalogInput batterySensor;
+    public AnalogInput sharp2;
 
 
 
@@ -248,7 +249,8 @@ public class Hardware2019
         frontSensor = hwMap.get(DistanceSensor.class, "dis_sensor1");
         backSensor = hwMap.get(DistanceSensor.class, "dis_sensor2");
         sideSensor = hwMap.get(DistanceSensor.class, "side_sensor");
-
+        batterySensor = hwMap.analogInput.get("dis_battery");
+        sharp2 = hwMap.analogInput.get("sharp_2");
 
 
 

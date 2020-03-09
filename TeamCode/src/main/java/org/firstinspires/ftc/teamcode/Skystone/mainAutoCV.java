@@ -484,7 +484,7 @@ public class mainAutoCV extends LinearOpMode {
                 readyToGrab();
                 mecanumDrive(0.75, -6 * s, 90, 0);
                 mecanumDrivetoObject(0.4, -10 * s, 90, -90, 130);
-                beforeClampCorrection1(0.2, 15, 90, 0, 355);
+                beforeClampCorrection1(0.2, 15, 90, 0, 390);
                 grabBlockWithClaw();
                 mecanumDrive(0.8, 10 * s, 90, -90);
                 mecanumDrive(0.9, 25 * s, 90, 0);

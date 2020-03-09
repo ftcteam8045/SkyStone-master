@@ -59,7 +59,7 @@ public class testHardware
 //    public DcMotor  rightRear   = null;
 //    public Servo    fServoL  = null;
 //    public Servo    fServoR  = null;
-    public AnalogInput sharp;
+    public AnalogInput batterySensor;
     public AnalogInput sharp2;
     //    public Servo    rightClaw   = null;
 
@@ -208,8 +208,8 @@ public class testHardware
 
 
         //Sharp IR Sensors
-        sharp = hwMap.analogInput.get("sharpir");
-        sharp2 = hwMap.analogInput.get("sharpir2");
+        batterySensor = hwMap.analogInput.get("dis_battery");
+        sharp2 = hwMap.analogInput.get("sharp_2");
         //sensor = hwMap.get(DistanceSensor.class, "sensor");
 
 

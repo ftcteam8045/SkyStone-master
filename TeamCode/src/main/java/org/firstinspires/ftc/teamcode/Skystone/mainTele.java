@@ -129,7 +129,12 @@ public class mainTele extends OpMode {
         telemetry.addData("Front Distance MM - ", Cosmo.frontSensor.getDistance(DistanceUnit.MM));
         telemetry.addData("Back Distance MM - ", Cosmo.backSensor.getDistance(DistanceUnit.MM));
         telemetry.addData("Clamp Side Distance MM - ", Cosmo.sideSensor.getDistance(DistanceUnit.MM));
-      //  telemetry.addData("Battery Side Distance MM - ", Cosmo.dis2.getDistance(DistanceUnit.MM));
+        double irvoltagetest = Cosmo.batterySensor.getVoltage();
+        double irdistancetest = -7.411 * Math.pow(irvoltagetest, 3) + 52.356 * Math.pow(irvoltagetest, 2) - 125.222 * irvoltagetest + 111.659;
+        telemetry.addData("", "Sharp volts, Distance(cm): %4.2f  %4.1f", irvoltagetest, irdistancetest);
+        double irvoltagetest2 = Cosmo.sharp2.getVoltage();
+        double irdistancetest2 = -7.411 * Math.pow(irvoltagetest2, 3) + 52.356 * Math.pow(irvoltagetest2, 2) - 125.222 * irvoltagetest2 + 111.659;
+        telemetry.addData("", "Sharp2 volts, Distance(cm): %4.2f  %4.1f", irvoltagetest2, irdistancetest2);
         /**  set drive speed  **/
 
         if (gamepad1.left_bumper) {
